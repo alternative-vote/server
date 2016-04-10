@@ -6,7 +6,7 @@ WORKDIR /usr/local/server
 
 # Install source
 COPY . /usr/local/server
-RUN npm install
+RUN ["npm", "install"]
 
 # Start app
 EXPOSE 3000

@@ -4,8 +4,8 @@
   "description": "the server",
   "main": "index.js",
   "scripts": {
-      "start":"node index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/alternative-vote/server/issues"
   },
-  "homepage": "https://github.com/alternative-vote/server#readme"
+  "homepage": "https://github.com/alternative-vote/server#readme",
+  "dependencies": {
+    "kafka-node": "^0.3.2"
+  }
 }
