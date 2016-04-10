@@ -1,11 +1,11 @@
 FROM node:5
 
 # Make working directory
-RUN mkdir -p /usr/src/app/
-WORKDIR /usr/src/app/
+RUN mkdir -p /usr/local/server
+WORKDIR /usr/local/server
 
 # Install source
-COPY . /usr/src/app/
+COPY . /usr/local/server
 RUN npm install
 
 # Start app
