@@ -1,12 +1,14 @@
 'use strict';
 
+const uuid = require('uuid');
 const http  = require('http');
+
 const url   = require('url');
 const kafka = require('kafka-node');
 
 const TOPIC_NAME = 'queries';
 
-const client   = new kafka.Client('zookeeper:2181');
+const client   = new kafka.Client('http://192.168.99.100:2181');
 const producer = new kafka.Producer(client);
 
 const messages = [];
@@ -20,17 +22,18 @@ producer.on('ready', () => {
   producer.createTopics([TOPIC_NAME], false, (err, data) => {
     console.error(err);
     console.log(data);
-  });
 
-  const consumer = new kafka.Consumer(client, [{
-    topic : TOPIC_NAME
-  }]);
+    const consumer = new kafka.Consumer(client, [{
+      topic : TOPIC_NAME
+    }]);
 
-  consumer.on('message', (message) => {
-    console.log('received message:', message);
-    try {
-      messages.push(JSON.parse(message.value));
-    } catch(err) {}
+    consumer.on('message', (message) => {
+      console.log('received message:', message);
+      try {
+        messages.push(JSON.parse(message.value));
+      } catch(err) {}
+    });
+
   });
 
   const server = http.createServer((req, res) => {
@@ -54,9 +57,3 @@ producer.on('ready', () => {
   console.log('listening on 3000');
 
 });
-
-
-
-
-
-
