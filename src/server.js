@@ -7,6 +7,7 @@ const Producer = require('./producer');
 const Cache = require('./cache');
 const TYPES = require('./TYPES');
 const _ = require('lodash');
+const utils = require('./utils')
 
 
 const ZOOKEEPER_HOST =  '192.168.99.100:2181';
@@ -53,8 +54,33 @@ app.get('/p',
     res.send("in the private route");
   });
 
+  app.get('/elections/:id', needsAuth, (req, res) => {
+    const id = req.params.id;
+    const election = _.cloneDeep(cache[id]);
+    // console.log(cache);
 
-app.post('/election', needsAuth, (req, res) => {
+    if (election == null) {
+      return res.sendStatus(404);
+    }
+
+    election.id = id;
+
+    election.candidates = denormalizeCollection(election.candidates);
+    election.categories = denormalizeCollection(election.categories);
+
+    _.forEach(election.categories, (category) => {
+      category.ballots = denormalizeCollection(category.ballots);
+      _.forEach(category.ballots, (ballot) => {
+        ballot.votes = denormalizeCollection(ballot.votes);
+      });
+    });
+
+    election.results = utils.getResults(election);
+
+    res.json(election);
+  });
+
+app.post('/elections', needsAuth, (req, res) => {
   const id = uuid.v4();
   _.forEach(req.body, (v, k) => {
     producer.write(TYPES.election, id, k, '+', v)
@@ -63,23 +89,66 @@ app.post('/election', needsAuth, (req, res) => {
 })
 
 app.post('/elections/:id/candidates', needsAuth, (req, res) => {
-  const electionId = req.params.id
-  const id = uuid.v4();
+  const electionId = req.params.id;
+  const candidateId = uuid.v4();
+
   _.forEach(req.body, (v, k) => {
-    producer.write(TYPES.election, id, k, '+', v)
+    producer.write(TYPES.candidate, candidateId, k, '+', v)
   })
-  res.status(201).json({id: id});
-})
+
+  producer.write(TYPES.election, electionId, 'candidates', '+', candidateId)
+
+  res.status(201).json({id: candidateId});
+});
+
+app.post('/elections/:id/categories', needsAuth, (req, res) => {
+  const electionId = req.params.id;
+  const categoryId = uuid.v4();
+
+  _.forEach(req.body, (v, k) => {
+    producer.write(TYPES.category, categoryId, k, '+', v)
+  })
+
+  producer.write(TYPES.election, electionId, 'categories', '+', categoryId)
+
+  res.status(201).json({id: categoryId});
+});
+
+app.post('/elections/:electionId/categories/:categoryId/ballots', needsAuth, (req, res) => {
+  const electionId = req.params.electionId; //TODO: this isn't needed
+  const categoryId = req.params.categoryId;
+  const ballotId = uuid.v4();
+
+  console.log('req.params = ', req.params);
+  console.log('req.body = ', req.body);
+
+  _.forEach(req.body, (v, k) => {
+    if( k == 'votes') {
+      _.forEach(v, (vote) => {
+         producer.write(TYPES.ballot, ballotId, k, '+', vote)
+      });
+    }
+    else {
+      producer.write(TYPES.ballot, ballotId, k, '+', v)
+    }
+
+  })
+
+  producer.write(TYPES.category, categoryId, 'ballots', '+', ballotId)
+
+  res.status(201).json({id: ballotId});
+});
+
+
 
 
 
 function needsAuth(req, res, next) {
-  if (true || req.isAuthenticated()) {
+  if (true || req.isAuthenticated()) { // TODO: don't short circut auth
     return next();
   }
   res.sendStatus(401);
 }
-
 
 producer = new Producer(ZOOKEEPER_HOST);
 producer.on('ready', () => {
@@ -87,3 +156,18 @@ producer.on('ready', () => {
   app.listen(3000);
   console.log('server listening on port 3000');
 })
+
+
+function denormalizeCollection(collectionOfRefs) {
+  const ret = [];
+
+  _.forEach(collectionOfRefs, (ref, i) => {
+    if(cache[ref] != null) {
+      const obj = _.cloneDeep(cache[ref])
+      obj.id = ref;
+      ret.push(obj);
+    }
+  });
+
+  return ret;
+}

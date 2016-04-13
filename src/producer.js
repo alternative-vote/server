@@ -13,7 +13,7 @@ class Producer extends EventEmitter {
 
     this.producer.on('ready', () =>{
       this.producer.createTopics(['events'], false, (err, data) => {
-        console.log('ready in producer.js');
+        // console.log('ready in producer.js');
         this.emit('ready');
       });
     });
@@ -27,15 +27,15 @@ class Producer extends EventEmitter {
       action: action,
       val: val
     }
-    console.log("writing message:");
-    console.log(message);
+    // console.log("writing message:");
+    // console.log(message);
     this.producer.send([{
       topic    : TOPIC,
       messages : [JSON.stringify(message)]
     }], (err, data) => {
       // console.log(`wrote message: ${message}`)
-      console.error('err', err);
-      console.log('data', data);
+      // console.error('err', err);
+      // console.log('data', data);
     });
   }
 }
