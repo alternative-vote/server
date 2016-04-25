@@ -1,0 +1,121 @@
+{
+  '81dfebbb-f022-4f72-a231-5ea5c2d0f463':
+   { name: 'end to end test',
+     candidates:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        'aab5cbe8-6be8-43d1-9a5e-1f0b659f2359' ],
+     categories:
+      [ '4be8d767-3f70-4128-8777-a1753a5fa504',
+        '692b7b8f-e23e-4533-a0c3-0f85c548a153',
+        '9375be53-d869-445d-a6d2-073021919ab7' ] },
+  '36363016-7e59-45e5-b9a2-59f1bd0c5e31': { name: 'A', description: 'Test candidate.' },
+  'b16a0673-39a6-4c80-83e5-8f003330c5f3': { name: 'B', description: 'Test candidate.' },
+  '7b4c8649-accb-4eeb-8c85-e83367c21076': { name: 'C', description: 'Test candidate.' },
+  'aab5cbe8-6be8-43d1-9a5e-1f0b659f2359': { name: 'D', description: 'Test candidate.' },
+  '4be8d767-3f70-4128-8777-a1753a5fa504':
+   { name: 'Best Hair',
+     ballots:
+      [ '4be8d767-3f70-4128-8777-a1753a5fa504-chris.langager',
+        '4be8d767-3f70-4128-8777-a1753a5fa504-test2',
+        '4be8d767-3f70-4128-8777-a1753a5fa504-test3',
+        '4be8d767-3f70-4128-8777-a1753a5fa504-test4',
+        '4be8d767-3f70-4128-8777-a1753a5fa504-test5' ] },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153':
+   { name: 'Most Likely to have Peaked in High School',
+     ballots:
+      [ '692b7b8f-e23e-4533-a0c3-0f85c548a153-chris.langager',
+        '692b7b8f-e23e-4533-a0c3-0f85c548a153-test2',
+        '692b7b8f-e23e-4533-a0c3-0f85c548a153-test3',
+        '692b7b8f-e23e-4533-a0c3-0f85c548a153-test4',
+        '692b7b8f-e23e-4533-a0c3-0f85c548a153-test5' ] },
+  '9375be53-d869-445d-a6d2-073021919ab7':
+   { name: 'Most Ox-Like',
+     ballots:
+      [ '9375be53-d869-445d-a6d2-073021919ab7-chris.langager',
+        '9375be53-d869-445d-a6d2-073021919ab7-test2',
+        '9375be53-d869-445d-a6d2-073021919ab7-test3',
+        '9375be53-d869-445d-a6d2-073021919ab7-test4',
+        '9375be53-d869-445d-a6d2-073021919ab7-test5' ] },
+  '4be8d767-3f70-4128-8777-a1753a5fa504-chris.langager':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'chris.langager' },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153-chris.langager':
+   { votes:
+      [ '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'chris.langager' },
+  '9375be53-d869-445d-a6d2-073021919ab7-chris.langager':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'chris.langager' },
+  '4be8d767-3f70-4128-8777-a1753a5fa504-test2':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test2' },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153-test2':
+   { votes:
+      [ '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'test2' },
+  '9375be53-d869-445d-a6d2-073021919ab7-test2':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test2' },
+  '4be8d767-3f70-4128-8777-a1753a5fa504-test3':
+   { votes:
+      [ 'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test3' },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153-test3':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'test3' },
+  '9375be53-d869-445d-a6d2-073021919ab7-test3':
+   { votes: [ '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test3' },
+  '4be8d767-3f70-4128-8777-a1753a5fa504-test4':
+   { votes:
+      [ 'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test4' },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153-test4':
+   { votes:
+      [ '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'test4' },
+  '9375be53-d869-445d-a6d2-073021919ab7-test4':
+   { votes: [ '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test4' },
+  '4be8d767-3f70-4128-8777-a1753a5fa504-test5':
+   { votes:
+      [ '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        '36363016-7e59-45e5-b9a2-59f1bd0c5e31',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'test5' },
+  '692b7b8f-e23e-4533-a0c3-0f85c548a153-test5':
+   { votes:
+      [ 'b16a0673-39a6-4c80-83e5-8f003330c5f3',
+        '7b4c8649-accb-4eeb-8c85-e83367c21076',
+        'b16a0673-39a6-4c80-83e5-8f003330c5f3' ],
+     username: 'test5' },
+  '9375be53-d869-445d-a6d2-073021919ab7-test5':
+   { votes: [ '7b4c8649-accb-4eeb-8c85-e83367c21076' ],
+     username: 'test5' } }

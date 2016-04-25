@@ -5,7 +5,11 @@ module.exports = run;
 
 
 function run(candidates, ballots) {
+  if(ballots.length == 0){
+    return [];
+  }
   //TODO: validate candidates
+
   const bins = _.transform(candidates, (result, candidate) => {
     result[candidate] = [];
   }, {})
@@ -16,10 +20,6 @@ function run(candidates, ballots) {
 function _run(bins, ballots, results) {
   if (results == null) {
     results = [];
-  }
-
-  if (ballots.length < 1){
-    return results;
   }
 
   // distribute ballots into bins

@@ -20,7 +20,7 @@ var app = express();
 // logging, parsing, and session handling.
 // app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
+// app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('body-parser').json());
 app.use(require('express-session')({ secret: 'boggle at the situation', resave: false, saveUninitialized: false }));
 // Initialize Passport and restore authentication state, if any, from the
@@ -35,12 +35,16 @@ app.get('/',
     res.send('root route');
   });
 
+app.get('/noAuth', (req, res) => {
+  res.sendStatus(401);
+});
+
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/'}),
+  passport.authenticate('local', { failureRedirect: '/noAuth'}),
   function (req, res) {
-    res.redirect('/p')
+    res.sendStatus(200);
   }
-  );
+);
 
 app.get('/logout',
   function(req, res){
@@ -51,44 +55,70 @@ app.get('/logout',
 app.get('/p',
   needsAuth,
   function(req, res){
+    console.log(req.user);
     res.send("in the private route");
   });
 
-  app.get('/elections/:id', needsAuth, (req, res) => {
-    const id = req.params.id;
-    const election = _.cloneDeep(cache[id]);
-    // console.log(cache);
+app.get('/elections/:id', needsAuth, (req, res) => {
+  const id = req.params.id;
+  const election = _.cloneDeep(cache[id]);
 
-    if (election == null) {
-      return res.sendStatus(404);
-    }
+  if (election == null) {
+    return res.sendStatus(404);
+  }
 
-    election.id = id;
+  election.id = id;
 
-    election.candidates = denormalizeCollection(election.candidates);
-    election.categories = denormalizeCollection(election.categories);
+  election.candidates = denormalizeCollection(election.candidates);
+  election.categories = denormalizeCollection(election.categories);
 
-    _.forEach(election.categories, (category) => {
-      category.ballots = denormalizeCollection(category.ballots);
-      _.forEach(category.ballots, (ballot) => {
-        ballot.votes = denormalizeCollection(ballot.votes);
-      });
+  _.forEach(election.categories, (category) => {
+    category.ballots = denormalizeCollection(category.ballots, {field: 'username', value: req.user.username});
+    _.forEach(category.ballots, (ballot) => {
+      ballot.votes = denormalizeCollection(ballot.votes);
     });
-
-    election.results = utils.getResults(election);
-
-    res.json(election);
   });
 
-app.post('/elections', needsAuth, (req, res) => {
+  res.json(election);
+});
+
+app.get('/elections/:id/actions/results', needAdmin, (req, res) => {
+  const id = req.params.id;
+  const election = _.cloneDeep(cache[id]);
+
+  if (election == null) {
+    return res.sendStatus(404);
+  }
+
+  election.id = id;
+
+  election.candidates = denormalizeCollection(election.candidates);
+  election.categories = denormalizeCollection(election.categories);
+
+  _.forEach(election.categories, (category) => {
+    category.ballots = denormalizeCollection(category.ballots);
+    _.forEach(category.ballots, (ballot) => {
+      ballot.votes = denormalizeCollection(ballot.votes);
+    });
+  });
+
+  election.results = utils.getResults(election);
+
+  res.json(election);
+});
+
+
+
+app.post('/elections', needAdmin, (req, res) => {
   const id = uuid.v4();
   _.forEach(req.body, (v, k) => {
     producer.write(TYPES.election, id, k, '+', v)
   })
+
   res.status(201).json({id: id});
 })
 
-app.post('/elections/:id/candidates', needsAuth, (req, res) => {
+app.post('/elections/:id/candidates', needAdmin, (req, res) => {
   const electionId = req.params.id;
   const candidateId = uuid.v4();
 
@@ -101,7 +131,7 @@ app.post('/elections/:id/candidates', needsAuth, (req, res) => {
   res.status(201).json({id: candidateId});
 });
 
-app.post('/elections/:id/categories', needsAuth, (req, res) => {
+app.post('/elections/:id/categories', needAdmin, (req, res) => {
   const electionId = req.params.id;
   const categoryId = uuid.v4();
 
@@ -117,13 +147,14 @@ app.post('/elections/:id/categories', needsAuth, (req, res) => {
 app.post('/elections/:electionId/categories/:categoryId/ballots', needsAuth, (req, res) => {
   const electionId = req.params.electionId; //TODO: this isn't needed
   const categoryId = req.params.categoryId;
-  const ballotId = uuid.v4();
+  const ballotId = `${categoryId}-${req.user.username}`
 
-  console.log('req.params = ', req.params);
-  console.log('req.body = ', req.body);
+  req.body.username = req.user.username;
 
   _.forEach(req.body, (v, k) => {
     if( k == 'votes') {
+      //clear out previous votes
+      producer.write(TYPES.ballot, ballotId, k, 'clear');
       _.forEach(v, (vote) => {
          producer.write(TYPES.ballot, ballotId, k, '+', vote)
       });
@@ -131,9 +162,11 @@ app.post('/elections/:electionId/categories/:categoryId/ballots', needsAuth, (re
     else {
       producer.write(TYPES.ballot, ballotId, k, '+', v)
     }
-
   })
 
+  //avoid duplicate refs in the collection of refs
+  //TODO: should this be handled by the cache layer? to do a _.uniq on certain arrays of refs?
+  producer.write(TYPES.category, categoryId, 'ballots', '-', ballotId)
   producer.write(TYPES.category, categoryId, 'ballots', '+', ballotId)
 
   res.status(201).json({id: ballotId});
@@ -144,7 +177,16 @@ app.post('/elections/:electionId/categories/:categoryId/ballots', needsAuth, (re
 
 
 function needsAuth(req, res, next) {
-  if (true || req.isAuthenticated()) { // TODO: don't short circut auth
+  if (req.isAuthenticated()) {
+
+    return next();
+  }
+  res.sendStatus(401);
+}
+
+function needAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.username == "chris.langager") { // TODO: don't short circut auth
+
     return next();
   }
   res.sendStatus(401);
@@ -158,11 +200,19 @@ producer.on('ready', () => {
 })
 
 
-function denormalizeCollection(collectionOfRefs) {
+function denormalizeCollection(collectionOfRefs, filter) {
   const ret = [];
 
   _.forEach(collectionOfRefs, (ref, i) => {
     if(cache[ref] != null) {
+
+      //obey filter (used for just the /elections/:id end point atm)
+      if(filter){
+        if (cache[ref][filter.field] != filter.value){
+          return;
+        }
+      }
+
       const obj = _.cloneDeep(cache[ref])
       obj.id = ref;
       ret.push(obj);

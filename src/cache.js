@@ -2,23 +2,47 @@
 
 const kafka = require('kafka-node');
 const EventEmitter = require('events');
+const _ = require('lodash');
+const fs = require('fs');
+const util = require('util');
 
 const TOPIC = 'events'
+
+const DB_FILE = './DB.txt';
+const CACHE_FILE = './cache.txt';
+
+
+function ensureLength(s, length) {
+  if(s.length >= length){
+    return s;
+  }
+
+  return ensureLength(s+' ', length);
+}
+
 
 class Cache extends EventEmitter {
   constructor(host) {
     super();
+    // fs.writeFile(DB_FILE, "offset\tid\t\ttype\tkey\taction\tval\n");
+    // fs.writeFile(CACHE_FILE, "");
+
 
     const client   = new kafka.Client(host);
     const consumer = new kafka.Consumer(client, [{
       topic : TOPIC,
-      offset: 186
+      offset: 6017
     }], {fromOffset: true});
 
     consumer.on('message', (message) => {
       // console.log('received message:', message);
+
       try {
-        _reduce(this, JSON.parse(message.value))
+        const parsed = JSON.parse(message.value);
+        // fs.appendFileSync(DB_FILE, `${message.offset}\t${ensureLength(parsed.id, 55)}\t${ensureLength(parsed.type, 15)}\t${ensureLength(parsed.key, 15)}\t${ensureLength(parsed.action, 5)}\t${parsed.val}\n`);
+
+        _reduce(this, parsed)
+        // fs.writeFile(CACHE_FILE, util.inspect(this,{depth: null }))
       } catch(err) {
         console.log(err);
       }
@@ -64,7 +88,8 @@ const cacheModels = {
     ballots: fieldTypes.collectionOfRefs,
   },
   ballot: {
-    votes : fieldTypes.collectionOfRefs,
+    username: fieldTypes.val,
+    votes: fieldTypes.collectionOfRefs,
   }
 }
 
@@ -74,16 +99,11 @@ function _reduce(root, message){
   const type = message.type;
   const id = message.id;
   const key = message.key;
-  // const action = message.action;
-  // const val = message.val;
 
   root[id] = _init(root, id)
   const oldVal = root[id][message.key];
   root[id][key] = _reduceModel(oldVal, cacheModels[type], message)
 
-  // root[id][message.key] = message.val;
-
-  // console.log(root);
 }
 
 function _init(root, id) {
@@ -128,18 +148,16 @@ function _reduceCollectionOfRefs(oldVal, action, newVal) {
   }
 
   if( action === '+' ) {
-    // console.log('oldVal = ', oldVal);
-    // console.log('newVal = ', newVal);
     oldVal.push(newVal);
     return oldVal;
   }
 
   if( action === '-' ) {
-    throw new Error('_reduceCollectionOfRefs() does not support - action yet');
+    return _.without(oldVal, newVal);
   }
 
   if( action === 'clear' ) {
-    return undefined;
+    return [];
   }
 }
 

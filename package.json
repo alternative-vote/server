@@ -26,7 +26,9 @@
     "kafka-node": "^0.3.2",
     "lodash": "^4.10.0",
     "passport": "^0.3.2",
+    "passport-json": "^1.2.0",
     "passport-local": "^1.0.0",
+    "request": "^2.71.0",
     "uuid": "^2.0.1"
   }
 }
