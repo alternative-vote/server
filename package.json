@@ -1,34 +1,23 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "the server",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alternative-vote/server.git"
-  },
+  "name": "alternative-vote",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/alternative-vote/server/issues"
-  },
-  "homepage": "https://github.com/alternative-vote/server#readme",
+  "license": "",
+  "main": "app.js",
   "dependencies": {
-    "body-parser": "^1.15.0",
-    "connect-ensure-login": "^0.1.1",
-    "cookie-parser": "^1.4.1",
-    "express": "^4.13.4",
-    "express-session": "^1.13.0",
-    "kafka-node": "^0.3.2",
-    "lodash": "^4.10.0",
-    "passport": "^0.3.2",
-    "passport-json": "^1.2.0",
-    "passport-local": "^1.0.0",
-    "request": "^2.71.0",
-    "uuid": "^2.0.1"
+    "express": "^4.12.3",
+    "swagger-express-mw": "^0.1.0",
+    "uuid": "^2.0.2"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
   }
 }

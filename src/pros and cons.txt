@@ -1,6 +1,0 @@
-
-what is lamda giving you
-- scalability and speed
-- subscription options
-- audits of every action
-- ability to rebuild into different view layers
