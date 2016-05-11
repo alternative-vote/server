@@ -1,0 +1,6 @@
+type: object
+properties:
+  statusCode:
+    type: integer
+  message:
+    type: string

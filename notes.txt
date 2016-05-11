@@ -1,0 +1,15 @@
+Swagger design:
+  - one file per field feels weird, but give it a go
+  - try to use a single schema definition that works for several routes,
+  instead of what you did with message-validator where each message is unique,
+  but quickly give up on this and just compose fields into message schemas if that makes more sense.
+  You'll get more control over required fields in the body if you go this route, there will just be more schemas.
+  Even with more schemas, you can still have a schema that is specific to the object and not just one message to be used in
+  responses, which are more consistent.
+
+
+
+Super-Swag:
+  - change controller to x-super-swag-controller
+  - write middleware to set default values.
+    - may need to use a custom "relative date" property

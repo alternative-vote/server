@@ -1,0 +1,4 @@
+Election:
+  $ref: ./Election.yaml
+Error:
+  $ref: ./Error.yaml

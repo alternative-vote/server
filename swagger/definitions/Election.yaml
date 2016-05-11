@@ -1,0 +1,64 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  owner:
+    type: string
+    format: uuid
+  name:
+    type: string
+    default: ""
+  status:
+    type: string
+    default: edit
+    enum:
+      - edit
+      - active
+      - complete
+  permissions:
+    type: object
+    required:
+      - voting
+      - results
+    properties:
+      voting:
+        type: string
+        default: public
+        enum:
+          - public
+          - private
+      results:
+        type: string
+        default: public
+        enum:
+          - public
+          - private
+  start:
+    description: "When the election should start.  If manual is set to true, this will override the date."
+    type: object
+    properties:
+      manual:
+        type: boolean
+      date:
+        type: string
+        format: date-time
+  stop:
+    description: "When the election should stop.  If manual is set to true, this will override the date."
+    type: object
+    properties:
+      manual:
+        type: boolean
+      date:
+        type: string
+        format: date-time
+  liveResults:
+    description: "If true, voters will be able to see the current results of an election after voting."
+    type: boolean
+    default: false
+  multipleCategories:
+    type: boolean
+    default: false
+
+  # age:
+  #   $ref: ../properties/age.yaml

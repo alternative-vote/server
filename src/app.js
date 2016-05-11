@@ -1,37 +1,28 @@
 const path = require('path');
 const SuperRouter = require('super-router');
 const ContentNegotiation = SuperRouter.Middleware.ContentNegotiation;
-const superSwag = require('super-swag');
+const SuperSwag = require('super-swag');
 const middleware = require('./middleware');
+const _ = require('lodash');
 
 
-const app = new SuperRouter.App();
-const superSwagOptions = {
-  swaggerFileLocation: path.resolve(__dirname, '../swagger.yaml'),
-  controllerDir: path.resolve(__dirname, 'controllers')
+module.exports = function(controllers, validators) {
+
+  const app = new SuperRouter.App();
+  const superSwag = new SuperSwag({
+    swaggerFileLocation: path.resolve(__dirname, '../swagger/swagger.yaml'),
+    controllers: controllers,
+    customValidators: validators //register custom format validators that aren't part of the swagger spec
+  });
+
+
+  app.then(ContentNegotiation.request);
+  // app.then(middleware.authorize); //TODO: implement this in super-swag
+  app.then(superSwag.meta);
+  app.then(superSwag.validate);
+  app.then(superSwag.route);
+  app.catch(middleware.error);
+  app.then(ContentNegotiation.response);
+
+  return app;
 }
-// call the superSwag constructor (that doesn't exist yet), and do a fs.readSync to load the yaml file.
-// also pass in everything any middleware would need so you don't have to pass in options for each middleware you set up.
-
-
-//the only thing you should go to the file system for is the yaml file.
-//have the router take a hash like this (express train does this if you group stuff into controllers):
-
-var mockRouting = {
-  elections:{
-    read: function (opts) {},
-    upsert: function (opts) {},
-  },
-  users: {
-    read: function (opts) {}
-  }
-};
-app.then(ContentNegotiation.request);
-// app.then(middleware.authorize(api));
-app.then(superSwag.validate(superSwagOptions));
-app.then(superSwag.route(superSwagOptions));
-app.catch(middleware.error);
-app.then(ContentNegotiation.response);
-
-
-module.exports = app;

@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Alternative Vote
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+securityDefinitions:
+  key:
+    type: apiKey
+    in: header
+    name: key
+paths:
+  /elections:
+    x-swagger-router-controller: electionController
+    post:
+      security:
+        - key: []
+      description: Upsert an election.
+      operationId: upsert
+      parameters:
+        - name: election
+          in: body
+          description: election object
+          required: true
+          schema:
+            $ref: "#/definitions/Election"
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Election"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+  /elections/{id}:
+    x-swagger-router-controller: electionController
+    get:
+      security:
+        - key: []
+      description: Get the details of a specific election.
+      operationId: read
+      parameters:
+        - name: id
+          in: path
+          description: uuid of the election
+          required: true
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/Election"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+
+
+  # /public:
+  #   x-swagger-router-controller: hello_world
+  #   get:
+  #     description: This is a public route
+  #     operationId: pub
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  # /private:
+  #   x-swagger-router-controller: hello_world
+  #   get:
+  #     security:
+  #       - key: []
+  #     description: This is a private route
+  #     operationId: priv
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  # /hello:
+  #   # binds a127 app logic to a route
+  #   x-swagger-router-controller: hello_world
+  #   get:
+  #     description: Returns 'Hello' to the caller
+  #     # used as the method name of the controller
+  #     operationId: hello
+  #     parameters:
+  #       - name: names
+  #         in: query
+  #         description: The name of the person to whom to say hello
+  #         required: false
+  #         type: string
+  #     responses:
+  #       "200":
+  #         description: Success
+  #         schema:
+  #           # a pointer to a definition
+  #           $ref: "#/definitions/HelloWorldResponse"
+  #       # responses may fall through to errors
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+    $ref: ./swagger/definitions/index.yaml
+  # HelloWorldResponse:
+  #   required:
+  #     - message
+  #   properties:
+  #     message:
+  #       type: string
+  # ErrorResponse:
+  #   required:
+  #     - message
+  #   properties:
+  #     message:
+  #       type: string

@@ -1,1 +1,2 @@
-require('./src/server.js');
+const tree = require('./src/index')();
+tree.resolve('server');
