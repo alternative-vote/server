@@ -2,15 +2,13 @@ package elections
 
 import (
 	"encoding/json"
-	"reflect"
-	"strings"
 
-	"fmt"
+	"time"
 
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
-	"github.com/davecgh/go-spew/spew"
+	"github.com/alternative-vote/server/utils"
 )
 
 func (o *Controller) UpdateElection(req *UpdateElectionRequest) *UpdateElectionResponse {
@@ -29,73 +27,26 @@ func (o *Controller) UpdateElection(req *UpdateElectionRequest) *UpdateElectionR
 	checkError(err)
 	json.Unmarshal(*results.Source, &dbElection)
 
-	changedValues := Extend(&dbElection, &wireElection, TitleArray(wireElection.MetaData.GetDeserializedProperties()))
+	//There's only certain fields that can be updated by the client
+	//TODO: update roles
+	updateableProps := []string{"title", "subtitle", "description", "startDate", "endDate", "candidates"}
+	propsToUpdate := utils.Intersection(updateableProps, req.Body.MetaData.GetDeserializedProperties())
+	utils.Extend(&dbElection, &wireElection, utils.TitleArray(propsToUpdate))
 
-	spew.Dump(changedValues)
-	// election.DateUpdated.Time = time.Now().UTC()
-	// _, err := o.Client.Index().
-	// 	Index(consts.INDEX).
-	// 	Type("election").
-	// 	Id(req.PathParams.Id).
-	// 	BodyJson(election).
-	// 	Do()
+	//update timestamp
+	dbElection.DateUpdated.Time = time.Now().UTC()
 
-	// checkError(err)
-	panic(HttpError(418))
+	//save changes to the db
+	_, err = o.Client.Index().
+		Index(consts.INDEX).
+		Type("election").
+		Id(req.PathParams.Id).
+		BodyJson(dbElection).
+		Do()
+	checkError(err)
 
-	// return &UpdateElectionResponse{
-	// 	StatusCode: 200,
-	// 	Body:       election.Election,
-	// }
-}
-
-func Extend(old interface{}, new interface{}, properties []string) []ChangedValue {
-	ret := []ChangedValue{}
-
-	rOld := reflect.ValueOf(old).Elem()
-	rNew := reflect.ValueOf(new).Elem()
-	for _, propName := range properties {
-		fmt.Println("working against property: ", propName)
-		rOldProp := rOld.FieldByName(propName)
-		rNewProp := rNew.FieldByName(propName)
-
-		spew.Dump(rOldProp.Kind().String())
-		spew.Dump(rNewProp.Kind().String())
-
-		// if rOldProp.IsNil() && rNewProp.IsNil() {
-		// 	continue
-		// }
-
-		// if rOldProp.IsNil() != rNewProp.IsNil() || rOldProp.Elem().Interface() != rNewProp.Elem().Interface() {
-		// 	var to, from interface{}
-		// 	if !rOldProp.IsNil() {
-		// 		from = rOldProp.Elem().Interface()
-		// 	}
-		// 	if !rNewProp.IsNil() {
-		// 		to = rNewProp.Elem().Interface()
-		// 	}
-
-		// 	ret = append(ret, ChangedValue{propName, from, to})
-
-		// 	rOldProp.Set(rNewProp)
-		// }
-
+	return &UpdateElectionResponse{
+		StatusCode: 200,
+		Body:       dbElection.Election,
 	}
-	return ret
-}
-
-type ChangedValue struct {
-	Name string
-	From interface{}
-	To   interface{}
-}
-
-func TitleArray(ss []string) []string {
-	ret := []string{}
-	for _, v := range ss {
-		s := v
-
-		ret = append(ret, strings.Title(s))
-	}
-	return ret
 }
