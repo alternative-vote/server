@@ -1,0 +1,22 @@
+hash: b1901106cbd254669e3c18416d48f098dc664f7c9c5f675aec666c9cb77c6409
+updated: 2016-12-28T17:19:21.631752486-07:00
+imports:
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 757bef944d0f21880861c2dd9c871ca543023cba
+- name: github.com/satori/go.uuid
+  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+- name: github.com/urfave/negroni
+  version: 43335025fafdef38d209080c1c67f5dff60b969a
+- name: golang.org/x/crypto
+  version: f6b343c37ca80bfa8ea539da67a0b621f84fab1d
+- name: golang.org/x/net
+  version: 45e771701b814666a7eb299e6c7a57d0b1799e91
+- name: golang.org/x/text
+  version: a49bea13b776691cb1b49873e5d8df96ec74831a
+- name: golang.org/x/tools
+  version: 908849c3379245f71612058fbf92cf6bf58c3c75
+- name: gopkg.in/olivere/elastic.v3
+  version: 060365a7e27c56c938b234824ef7f9a3a7834b99
+devImports: []

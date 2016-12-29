@@ -1,0 +1,6 @@
+package: github.com/alternative-vote/server
+import:
+- package: github.com/gorilla/mux
+- package: github.com/satori/go.uuid
+- package: github.com/urfave/negroni
+- package: gopkg.in/olivere/elastic.v3
