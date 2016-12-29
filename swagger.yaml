@@ -69,6 +69,15 @@ paths:
           description: something
           schema:
             $ref: "#/definitions/Election"
+    delete:
+      operationId: deleteElection
+      parameters:
+      - $ref: "#/parameters/id"
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
   "/elections/{id}/actions/start":
     x-swagger-router-controller: election
     put:
@@ -238,9 +247,6 @@ definitions:
   Candidate:
     type: object
     properties:
-      id:
-        type: string
-        format: uuid
       title:
         type: string
       subtitle:

@@ -28,6 +28,12 @@ type UpdateElectionResponse struct {
     Body Election
     }
 
+type DeleteElectionResponse struct {
+    StatusCode int
+    Headers map[string]string
+    Body interface{}
+    }
+
 type StartElectionResponse struct {
     StatusCode int
     Headers map[string]string

@@ -108,6 +108,46 @@ func (o *UpdateElectionRequestPathParams) validate() []string {
     return errors
 }
 
+type DeleteElectionRequest struct {
+    Context context.Context
+    PathParams DeleteElectionRequestPathParams
+}
+func (o *DeleteElectionRequest) validate() []string {
+    ret := []string{}
+    ret = append(ret, o.PathParams.validate()...)
+    return ret
+}
+
+type DeleteElectionRequestPathParams struct {
+    Id string `json:"id"`
+}
+func (o *DeleteElectionRequestPathParams) validate() []string {
+     errors := []string{}
+    idErrors := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid uuid
+    if FormatValidators["uuid"] != nil {
+      valid, formatError := FormatValidators["uuid"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Id, "path")
+    errors = append(errors, idErrors...)
+
+    return errors
+}
+
 type StartElectionRequest struct {
     Context context.Context
     PathParams StartElectionRequestPathParams

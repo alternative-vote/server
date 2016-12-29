@@ -676,7 +676,7 @@ func (o *Candidate) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"id", "title", "subtitle", "description"}, fieldFromJSON) {
+		if !hasElem([]string{"title", "subtitle", "description"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -695,34 +695,6 @@ func (o *Candidate) validate(parentName string) []string {
 
 
 	//go through each property
-
-	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "id") {
-		//id is a primative
-		idErr := func(propValue string, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-    //check to see if this is a valid uuid
-    if FormatValidators["uuid"] != nil {
-      valid, formatError := FormatValidators["uuid"](propValue)
-      if !valid {
-        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
-      }
-    }
-
-
-
-
-
-    return ret
-}(o.Id, parentName)
-		if idErr != nil {
-			errors = append(errors, idErr...)
-		}
-	}
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "title") {

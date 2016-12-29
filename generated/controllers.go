@@ -13,6 +13,8 @@ type IElectionController interface{
     
     UpdateElection(*UpdateElectionRequest) *UpdateElectionResponse
     
+    DeleteElection(*DeleteElectionRequest) *DeleteElectionResponse
+    
     StartElection(*StartElectionRequest) *StartElectionResponse
     
     StopElection(*StopElectionRequest) *StopElectionResponse

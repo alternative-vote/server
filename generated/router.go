@@ -120,7 +120,8 @@ func Router() *mux.Router {
 	    "childRoutes": {
 	        "/elections/{id}": {
 	            "GET": "getElection",
-	            "PUT": "updateElection"
+	            "PUT": "updateElection",
+	            "DELETE": "deleteElection"
 	        }
 	    },
 	    "methods": {
@@ -254,10 +255,6 @@ func Router() *mux.Router {
 	                                    "items": {
 	                                        "type": "object",
 	                                        "properties": {
-	                                            "id": {
-	                                                "type": "string",
-	                                                "format": "uuid"
-	                                            },
 	                                            "title": {
 	                                                "type": "string"
 	                                            },
@@ -422,10 +419,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -579,10 +572,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -740,6 +729,61 @@ func Router() *mux.Router {
         responseBytes, _ := json.Marshal(response.Body)
         res.Write(responseBytes)
     }).Methods("put")    
+    //delete /elections/{id}/
+    router.HandleFunc("/elections/{id}/", func(res http.ResponseWriter, req *http.Request) {
+       request := new(DeleteElectionRequest)
+        request.Context = req.Context()
+        errors := []string{}
+    
+        //'id' in form data
+        request.PathParams.Id = func(s string) string {
+            var ret string
+            if s == "" {
+                errors = append(errors, "id is a required path parameter")
+                return ret
+            }
+            var err error
+            ret, err = func(s string) (string, error) {
+            return s, nil
+        }(s)
+            if err != nil {
+                errors = append(errors, fmt.Sprintf("id: '%v' is not a valid string", s))
+            }
+        
+            return ret
+        }(mux.Vars(req)["id"])
+        
+        
+        //don't bother to validate if we had deserialization errors
+        if len(errors) == 0 {
+            errors = append(errors, request.validate()...)
+        }
+        
+    
+        if len(errors) > 0 {
+            apiError := HttpError(400)
+            apiError.ValidationErrors = errors
+            panic(apiError)
+    	}
+        if RouterElectionController == nil {
+            panic(HttpError(501))
+        }
+        response := RouterElectionController.DeleteElection(request)
+    
+        //transfer headers to the actual http response
+        if response != nil {
+            for k, v := range response.Headers {
+                res.Header().Set(k, v)
+            }
+        }
+        
+        //transfer status code to the actual http response
+        //order matters - make sure to do this after setting other header values!
+        res.WriteHeader(response.StatusCode)
+        
+        responseBytes, _ := json.Marshal(response.Body)
+        res.Write(responseBytes)
+    }).Methods("delete")    
     //options /elections/{id}/
 	router.HandleFunc("/elections/{id}/", func(res http.ResponseWriter, req *http.Request) {
 	    res.Write([]byte(`{
@@ -893,10 +937,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1062,10 +1102,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1219,10 +1255,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1247,6 +1279,26 @@ func Router() *mux.Router {
 	                                }
 	                            }
 	                        }
+	                    }
+	                }
+	            }
+	        },
+	        "delete": {
+	            "operationId": "deleteElection",
+	            "parameters": [
+	                {
+	                    "in": "path",
+	                    "name": "id",
+	                    "required": true,
+	                    "type": "string",
+	                    "format": "uuid"
+	                }
+	            ],
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object"
 	                    }
 	                }
 	            }
@@ -1475,10 +1527,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1731,10 +1779,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1935,10 +1979,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -1997,10 +2037,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },
@@ -2047,10 +2083,6 @@ func Router() *mux.Router {
 	                                "items": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "id": {
-	                                            "type": "string",
-	                                            "format": "uuid"
-	                                        },
 	                                        "title": {
 	                                            "type": "string"
 	                                        },

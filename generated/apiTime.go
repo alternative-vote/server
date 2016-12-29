@@ -33,8 +33,6 @@ func (t *APITime) MarshalJSON() ([]byte, error) {
 }
 
 func (t *APITime) UnmarshalJSON(data []byte) error {
-	t = new(APITime)
-
 	s := strings.Replace(string(data), "\"", "", -1)
 
 	var err error
