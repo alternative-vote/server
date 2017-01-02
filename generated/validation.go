@@ -762,3 +762,80 @@ func (o *Candidate) validate(parentName string) []string {
     return errors
 }
 
+func (o *LoginRequestBody) extraFields(parentName string) []string {
+	ret := []string{}
+
+    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
+		if !hasElem([]string{"username", "password"}, fieldFromJSON) {
+			ret = append(ret, parentName+"."+fieldFromJSON)
+		}
+	}
+
+    return ret
+}
+
+func (o *LoginRequestBody) validate(parentName string) []string {
+	errors := []string{}
+
+    //check for extra fields first
+    extraFields := o.extraFields(parentName)
+	if len(extraFields) > 0 {
+		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
+	}
+
+
+	//go through each property
+	//set check required based off of what was deserialized
+	if !hasElem(o.MetaData.GetDeserializedProperties(), "username") {
+		 errors = append(errors, fmt.Sprintf("%v.username is a required field", parentName))
+	}
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "username") {
+		//username is a primative
+		usernameErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.Username, parentName)
+		if usernameErr != nil {
+			errors = append(errors, usernameErr...)
+		}
+	}
+	//set check required based off of what was deserialized
+	if !hasElem(o.MetaData.GetDeserializedProperties(), "password") {
+		 errors = append(errors, fmt.Sprintf("%v.password is a required field", parentName))
+	}
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "password") {
+		//password is a primative
+		passwordErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.Password, parentName)
+		if passwordErr != nil {
+			errors = append(errors, passwordErr...)
+		}
+	}
+
+    return errors
+}
+

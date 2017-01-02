@@ -25,6 +25,7 @@ var _ = strings.Compare("a", "b")
 var _ = json.Decoder{}
 
 var RouterElectionController IElectionController
+var RouterAuthenticationController IAuthenticationController
 
 func Router() *mux.Router {
     router := mux.NewRouter()
@@ -2112,6 +2113,100 @@ func Router() *mux.Router {
 	    panic(HttpError(405))
 	})
 
+    //post /login/
+    router.HandleFunc("/login/", func(res http.ResponseWriter, req *http.Request) {
+       request := new(LoginRequest)
+        request.Context = req.Context()
+        errors := []string{}
+    
+        bodyBytes, readErr := ioutil.ReadAll(req.Body)
+        if readErr != nil {
+            panic("error reading body from the request: " + readErr.Error())
+        }
+        
+        //ok, now let's decode it into the actual request object
+        bodyError := json.Unmarshal(bodyBytes, &request.Body)
+        if bodyError != nil {
+        	errors = append(errors, "invalid JSON or wrong types: "+bodyError.Error())
+        }
+        
+        //don't bother to validate if we had deserialization errors
+        if len(errors) == 0 {
+            errors = append(errors, request.validate()...)
+        }
+        
+    
+        if len(errors) > 0 {
+            apiError := HttpError(400)
+            apiError.ValidationErrors = errors
+            panic(apiError)
+    	}
+        if RouterAuthenticationController == nil {
+            panic(HttpError(501))
+        }
+        response := RouterAuthenticationController.Login(request)
+    
+        //transfer headers to the actual http response
+        if response != nil {
+            for k, v := range response.Headers {
+                res.Header().Set(k, v)
+            }
+        }
+        
+        //transfer status code to the actual http response
+        //order matters - make sure to do this after setting other header values!
+        res.WriteHeader(response.StatusCode)
+        
+        responseBytes, _ := json.Marshal(response.Body)
+        res.Write(responseBytes)
+    }).Methods("post")    
+    //options /login/
+	router.HandleFunc("/login/", func(res http.ResponseWriter, req *http.Request) {
+	    res.Write([]byte(`{
+	    "childRoutes": {},
+	    "methods": {
+	        "post": {
+	            "operationId": "login",
+	            "parameters": [
+	                {
+	                    "name": "body",
+	                    "in": "body",
+	                    "required": true,
+	                    "schema": {
+	                        "type": "object",
+	                        "required": [
+	                            "username",
+	                            "password"
+	                        ],
+	                        "properties": {
+	                            "username": {
+	                                "type": "string"
+	                            },
+	                            "password": {
+	                                "type": "string"
+	                            }
+	                        }
+	                    }
+	                }
+	            ],
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object"
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}`))
+	}).Methods("options")
+    
+    //405 handler for /login/
+    router.HandleFunc("/login/", func(res http.ResponseWriter, req *http.Request) {
+	    panic(HttpError(405))
+	})
+
 
 	//root options request handler
 	router.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
@@ -2120,6 +2215,9 @@ func Router() *mux.Router {
 	        "/elections": {
 	            "GET": "listElections",
 	            "POST": "createElection"
+	        },
+	        "/login": {
+	            "POST": "login"
 	        }
 	    },
 	    "methods": {}

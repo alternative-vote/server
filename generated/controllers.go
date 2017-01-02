@@ -25,3 +25,8 @@ type IElectionController interface{
     
 }
 
+type IAuthenticationController interface{
+    Login(*LoginRequest) *LoginResponse
+    
+}
+

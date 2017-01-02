@@ -58,3 +58,9 @@ type UpsertBallotResponse struct {
     Body Ballot
     }
 
+type LoginResponse struct {
+    StatusCode int
+    Headers map[string]string
+    Body interface{}
+    }
+

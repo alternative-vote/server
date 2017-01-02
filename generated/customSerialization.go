@@ -154,3 +154,22 @@ func (o *Candidate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type loginrequestbody LoginRequestBody
+
+func (o *LoginRequestBody) UnmarshalJSON(data []byte) error {
+	//deserialize normally (using our private dummy struct to prevent looping)
+	privateObject := new(loginrequestbody)
+	err := json.Unmarshal(data, privateObject)
+	if err != nil {
+		return err
+	}
+	*o = LoginRequestBody(*privateObject)
+
+	//ok, if that worked lets fill in some metadata
+	for _, propertyName := range getFields(data) {
+		o.MetaData.AddDeserializedProperty(propertyName)
+	}
+
+	return nil
+}
+

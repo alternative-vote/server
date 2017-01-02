@@ -312,3 +312,14 @@ func (o *UpsertBallotRequestPathParams) validate() []string {
     return errors
 }
 
+type LoginRequest struct {
+    Context context.Context
+    Body LoginRequestBody
+}
+func (o *LoginRequest) validate() []string {
+    ret := []string{}
+    ret = append(ret, o.Body.validate("body")...)
+    return ret
+}
+
+

@@ -9,12 +9,7 @@ type Controller struct {
 	Client *elastic.Client
 }
 
-func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResponse {
-	panic(HttpError(418))
-}
-func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionResponse {
-	panic(HttpError(418))
-}
+
 func (o *Controller) GetBallot(req *GetBallotRequest) *GetBallotResponse {
 	panic(HttpError(418))
 }

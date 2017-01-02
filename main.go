@@ -1,14 +1,32 @@
 package main
 
 import (
+	"fmt"
+	"net/http"
+
+	"gopkg.in/olivere/elastic.v3"
+
+	"github.com/alternative-vote/server/authentication"
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/elections"
 	"github.com/alternative-vote/server/generated"
-	"gopkg.in/olivere/elastic.v3"
+	"github.com/dgrijalva/jwt-go"
 )
 
 func main() {
 
+	client := initDB()
+
+	//Auth middleware for admin stuff
+	generated.AddMiddleware(adminAuthMiddleare, `/elections/{restOfRoute:.*}`)
+
+	//link up controllers and start the server
+	generated.RouterElectionController = &elections.Controller{Client: client}
+	generated.RouterAuthenticationController = &authentication.Controller{}
+	generated.StartServer("127.0.0.1:8000")
+}
+
+func initDB() *elastic.Client {
 	// Create a client and connect to http://192.168.2.10:9201
 	client, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(consts.DB_LOC))
 	if err != nil {
@@ -29,70 +47,35 @@ func main() {
 			panic(err)
 		}
 	}
+	return client
+}
 
-	// searchResults, err := client.
-	// 	Search(INDEX).
-	// 	Type("election").
-	// 	From(0).
-	// 	Size(10000).
-	// 	Do()
-	// if err != nil {
-	// 	panic(err)
-	// }
+func adminAuthMiddleare(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	tokenString := req.Header.Get("authorization")
 
-	// var e generated.Election
-	// for _, item := range searchResults.Each(reflect.TypeOf(e)) {
-	// 	if election, ok := item.(generated.Election); ok {
-	// 		fmt.Println("Title:", election.Title)
-	// 		fmt.Println("DateCreated:", election.DateCreated)
-	// 		fmt.Println("DateUpdated:", election.DateUpdated)
-	// 	}
-	// }
+	if tokenString == "" {
+		panic(generated.HttpError(401).Message("missing token in authorization header"))
+	}
 
-	// os.Exit(0)
+	token, _ := jwt.ParseWithClaims(tokenString, &authentication.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			panic(generated.HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
+		}
+		return authentication.Secret, nil
+	})
 
-	// //election we are going to play with
-	// testElection := generated.Election{
-	// 	Id:    uuid.NewV4().String(),
-	// 	Title: "test election",
-	// 	Candidates: []generated.Candidate{
-	// 		{Title: "A"},
-	// 		{Title: "B"},
-	// 	},
-	// }
-	// testElection.DateCreated.Time = time.Now().UTC()
-	// testElection.DateUpdated.Time = time.Now().UTC()
+	_, ok := token.Claims.(*authentication.CustomClaims)
 
-	// //create the election
-	// put, err := client.Index().
-	// 	Index(INDEX).
-	// 	Type("election").
-	// 	Id(testElection.Id).
-	// 	BodyJson(testElection).
-	// 	Do()
+	if !ok {
+		panic(generated.HttpError(401).Message("unable to unpack token"))
+	}
 
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// spew.Dump(put)
+	if !token.Valid {
+		panic(generated.HttpError(401))
+	}
 
-	// //get it back out
-	// get, err := client.Get().
-	// 	Index(INDEX).
-	// 	Type("election").
-	// 	Id(testElection.Id).
-	// 	Do()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	//TODO: put CustomClaims data on request context
 
-	// spew.Dump(get)
-
-	// var electionFromDB generated.Election
-	// json.Unmarshal(*get.Source, &electionFromDB)
-
-	// spew.Dump(electionFromDB.DateCreated)
-
-	generated.RouterElectionController = &elections.Controller{Client: client}
-	generated.StartServer("127.0.0.1:8000")
+	next(res, req)
 }
