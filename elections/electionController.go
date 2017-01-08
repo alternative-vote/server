@@ -1,20 +1,16 @@
 package elections
 
 import (
+	"encoding/json"
+
+	"github.com/alternative-vote/server/consts"
+	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
 	"gopkg.in/olivere/elastic.v3"
 )
 
 type Controller struct {
 	Client *elastic.Client
-}
-
-
-func (o *Controller) GetBallot(req *GetBallotRequest) *GetBallotResponse {
-	panic(HttpError(418))
-}
-func (o *Controller) UpsertBallot(req *UpsertBallotRequest) *UpsertBallotResponse {
-	panic(HttpError(418))
 }
 
 func checkError(err error) {
@@ -27,4 +23,17 @@ func checkError(err error) {
 	}
 
 	panic(err)
+}
+
+func (o *Controller) getElectionById(id string) domain.Election {
+	results, err := o.Client.Get().
+		Index(consts.INDEX).
+		Type("election").
+		Id(id).
+		Do()
+	checkError(err)
+
+	var election domain.Election
+	json.Unmarshal(*results.Source, &election)
+	return election
 }

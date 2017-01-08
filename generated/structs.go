@@ -31,7 +31,7 @@ type Timer struct {
 }
 
 type Ballot struct {
-    Voter User `json:"voter"`
+    Voter string `json:"voter"`
     Votes []Candidate `json:"votes"`
     IsSubmitted bool `json:"isSubmitted"`
     MetaData SerializationMetadata `json:"-"`
@@ -54,6 +54,12 @@ type Candidate struct {
 type LoginRequestBody struct {
     Email string `json:"email"`
     Password string `json:"password"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
+type GetBallotResponseBody struct {
+    Election Election `json:"election"`
+    Ballot Ballot `json:"ballot"`
     MetaData SerializationMetadata `json:"-"`
 }
 

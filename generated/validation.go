@@ -542,12 +542,33 @@ func (o *Ballot) validate(parentName string) []string {
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "voter") {
-		//voter is a struct
-		errors = append(errors, o.Voter.validate(parentName + ".voter")...)
+		//voter is a primative
+		voterErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid email
+    if FormatValidators["email"] != nil {
+      valid, formatError := FormatValidators["email"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.voter: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Voter, parentName)
+		if voterErr != nil {
+			errors = append(errors, voterErr...)
+		}
 	}
 
 	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
-	errors = append(errors, o.Voter.validate(parentName + ".voter")...)
 
 
 
@@ -895,6 +916,55 @@ func (o *LoginRequestBody) validate(parentName string) []string {
 	}
 
 	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+    return errors
+}
+
+func (o *GetBallotResponseBody) extraFields(parentName string) []string {
+	ret := []string{}
+
+    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
+		if !hasElem([]string{"election", "ballot"}, fieldFromJSON) {
+			ret = append(ret, parentName+"."+fieldFromJSON)
+		}
+	}
+
+    return ret
+}
+
+func (o *GetBallotResponseBody) validate(parentName string) []string {
+	errors := []string{}
+
+    //check for extra fields first
+    extraFields := o.extraFields(parentName)
+	if len(extraFields) > 0 {
+		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
+	}
+
+
+	//go through each property
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "election") {
+		//election is a struct
+		errors = append(errors, o.Election.validate(parentName + ".election")...)
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Election.validate(parentName + ".election")...)
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "ballot") {
+		//ballot is a struct
+		errors = append(errors, o.Ballot.validate(parentName + ".ballot")...)
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Ballot.validate(parentName + ".ballot")...)
 
 
 

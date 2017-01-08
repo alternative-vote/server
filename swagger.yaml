@@ -110,31 +110,31 @@ paths:
           description: something
           schema:
             $ref: "#/definitions/Election"
-  "/elections/{id}/ballot":
-    x-swagger-router-controller: election
-    get:
-      operationId: getBallot
-      parameters:
-      - $ref: "#/parameters/id"
-      responses:
-        '200':
-          description: something
-          schema:
-            $ref: "#/definitions/Ballot"
-    post:
-      operationId: upsertBallot
-      parameters:
-      - $ref: "#/parameters/id"
-      - name: body
-        in: body
-        required: true
-        schema:
-          $ref: "#/definitions/Ballot"
-      responses:
-        '200':
-          description: something
-          schema:
-            $ref: "#/definitions/Ballot"
+#   "/elections/{id}/ballot":
+#     x-swagger-router-controller: election
+#     get:
+#       operationId: getBallot
+#       parameters:
+#       - $ref: "#/parameters/id"
+#       responses:
+#         '200':
+#           description: something
+#           schema:
+#             $ref: "#/definitions/Ballot"
+#     post:
+#       operationId: upsertBallot
+#       parameters:
+#       - $ref: "#/parameters/id"
+#       - name: body
+#         in: body
+#         required: true
+#         schema:
+#           $ref: "#/definitions/Ballot"
+#       responses:
+#         '200':
+#           description: something
+#           schema:
+#             $ref: "#/definitions/Ballot"
   "/login":
     x-swagger-router-controller: authentication
     post:
@@ -160,8 +160,27 @@ paths:
           schema:
             type: object
 
-#   "/api/vote/{hash}"
-  
+  "/vote/{token}":
+    x-swagger-router-controller: election
+    get:
+      operationId: getBallot
+      parameters:
+      - in: path
+        name: token
+        required: true
+        type: string
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
+            properties:
+              election:
+                $ref: "#/definitions/Election"
+              ballot:
+                $ref: "#/definitions/Ballot"
+                
+
 
   
 parameters:
@@ -251,7 +270,8 @@ definitions:
     type: object
     properties:
       voter: 
-        $ref: "#/definitions/User"
+        type: string
+        format: email
       votes:
         type: array
         items:

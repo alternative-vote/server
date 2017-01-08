@@ -46,21 +46,15 @@ type StopElectionResponse struct {
     Body Election
     }
 
-type GetBallotResponse struct {
-    StatusCode int
-    Headers map[string]string
-    Body Ballot
-    }
-
-type UpsertBallotResponse struct {
-    StatusCode int
-    Headers map[string]string
-    Body Ballot
-    }
-
 type LoginResponse struct {
     StatusCode int
     Headers map[string]string
     Body interface{}
+    }
+
+type GetBallotResponse struct {
+    StatusCode int
+    Headers map[string]string
+    Body GetBallotResponseBody
     }
 

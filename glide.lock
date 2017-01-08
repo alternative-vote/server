@@ -1,8 +1,10 @@
-hash: d457a2a13b93af4621fc54e68822fcaa14815f48dde8fcc368f17b7cbdaae048
-updated: 2017-01-02T13:36:44.37890778-07:00
+hash: eee45baa10ee7c1b3513dd7f17b443689454206ee375db1245f92532765c12e7
+updated: 2017-01-08T13:52:28.522750071-07:00
 imports:
 - name: github.com/dgrijalva/jwt-go
-  version: 9ed569b5d1ac936e6494082958d63a6aa4fff99a
+  version: a601269ab70c205d26370c16f7c81e9017c14e04
+- name: github.com/go-gomail/gomail
+  version: 81ebce5c23dfd25c6c67194b37d3dd3f338c98b1
 - name: github.com/gorilla/context
   version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux

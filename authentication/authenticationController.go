@@ -1,11 +1,10 @@
 package authentication
 
 import (
+	"github.com/alternative-vote/server/consts"
 	. "github.com/alternative-vote/server/generated"
 	"github.com/dgrijalva/jwt-go"
 )
-
-var Secret = []byte("boggleboggle1234")
 
 type CustomClaims struct {
 	Email string
@@ -29,7 +28,7 @@ func (o *Controller) Login(req *LoginRequest) *LoginResponse {
 	})
 
 	//sign the token with the hardcoded secret
-	tokenString, err := token.SignedString(Secret)
+	tokenString, err := token.SignedString(consts.Secret)
 	if err != nil {
 		panic(err)
 	}

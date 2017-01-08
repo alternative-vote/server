@@ -230,6 +230,17 @@ func (o *StopElectionRequestPathParams) validate() []string {
     return errors
 }
 
+type LoginRequest struct {
+    Context context.Context
+    Body LoginRequestBody
+}
+func (o *LoginRequest) validate() []string {
+    ret := []string{}
+    ret = append(ret, o.Body.validate("body")...)
+    return ret
+}
+
+
 type GetBallotRequest struct {
     Context context.Context
     PathParams GetBallotRequestPathParams
@@ -241,85 +252,25 @@ func (o *GetBallotRequest) validate() []string {
 }
 
 type GetBallotRequestPathParams struct {
-    Id string `json:"id"`
+    Token string `json:"token"`
 }
 func (o *GetBallotRequestPathParams) validate() []string {
      errors := []string{}
-    idErrors := func(propValue string, parentName string) []string {
+    tokenErrors := func(propValue string, parentName string) []string {
     ret := []string{}
     v := propValue
     _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
     
 
-    //check to see if this is a valid uuid
-    if FormatValidators["uuid"] != nil {
-      valid, formatError := FormatValidators["uuid"](propValue)
-      if !valid {
-        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
-      }
-    }
 
 
 
 
 
     return ret
-}(o.Id, "path")
-    errors = append(errors, idErrors...)
+}(o.Token, "path")
+    errors = append(errors, tokenErrors...)
 
     return errors
 }
-
-type UpsertBallotRequest struct {
-    Context context.Context
-    PathParams UpsertBallotRequestPathParams
-    Body Ballot
-}
-func (o *UpsertBallotRequest) validate() []string {
-    ret := []string{}
-    ret = append(ret, o.PathParams.validate()...)
-    ret = append(ret, o.Body.validate("body")...)
-    return ret
-}
-
-type UpsertBallotRequestPathParams struct {
-    Id string `json:"id"`
-}
-func (o *UpsertBallotRequestPathParams) validate() []string {
-     errors := []string{}
-    idErrors := func(propValue string, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-    //check to see if this is a valid uuid
-    if FormatValidators["uuid"] != nil {
-      valid, formatError := FormatValidators["uuid"](propValue)
-      if !valid {
-        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
-      }
-    }
-
-
-
-
-
-    return ret
-}(o.Id, "path")
-    errors = append(errors, idErrors...)
-
-    return errors
-}
-
-type LoginRequest struct {
-    Context context.Context
-    Body LoginRequestBody
-}
-func (o *LoginRequest) validate() []string {
-    ret := []string{}
-    ret = append(ret, o.Body.validate("body")...)
-    return ret
-}
-
 

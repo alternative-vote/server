@@ -8,3 +8,5 @@ const (
 	Running  string = "running"
 	Complete string = "complete"
 )
+
+var Secret = []byte("boggleboggle1234")

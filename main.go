@@ -71,17 +71,17 @@ func adminAuthMiddleare(res http.ResponseWriter, req *http.Request, next http.Ha
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			panic(generated.HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
 		}
-		return authentication.Secret, nil
+		return consts.Secret, nil
 	})
+
+	if !token.Valid {
+		panic(generated.HttpError(401))
+	}
 
 	claims, ok := token.Claims.(*authentication.CustomClaims)
 
 	if !ok {
 		panic(generated.HttpError(401).Message("unable to unpack token"))
-	}
-
-	if !token.Valid {
-		panic(generated.HttpError(401))
 	}
 
 	req = req.WithContext(utils.SetClaims(req.Context(), *claims))

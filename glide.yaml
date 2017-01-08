@@ -5,3 +5,4 @@ import:
 - package: github.com/urfave/negroni
 - package: gopkg.in/olivere/elastic.v3
 - package: github.com/dgrijalva/jwt-go
+- package: github.com/go-gomail/gomail

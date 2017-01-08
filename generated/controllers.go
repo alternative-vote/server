@@ -21,8 +21,6 @@ type IElectionController interface{
     
     GetBallot(*GetBallotRequest) *GetBallotResponse
     
-    UpsertBallot(*UpsertBallotRequest) *UpsertBallotResponse
-    
 }
 
 type IAuthenticationController interface{
