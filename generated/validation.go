@@ -49,6 +49,10 @@ func (o *ElectionResults) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
     return errors
 }
 
@@ -104,6 +108,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "dateCreated") {
 		//dateCreated is a primative
@@ -131,6 +139,10 @@ func (o *Election) validate(parentName string) []string {
 			errors = append(errors, dateCreatedErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "dateUpdated") {
@@ -160,6 +172,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "title") {
 		//title is a primative
@@ -180,6 +196,10 @@ func (o *Election) validate(parentName string) []string {
 			errors = append(errors, titleErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "subtitle") {
@@ -202,6 +222,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "description") {
 		//description is a primative
@@ -223,17 +247,31 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "startDate") {
 		//startDate is a struct
 		errors = append(errors, o.StartDate.validate(parentName + ".startDate")...)
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.StartDate.validate(parentName + ".startDate")...)
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "endDate") {
 		//endDate is a struct
 		errors = append(errors, o.EndDate.validate(parentName + ".endDate")...)
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.EndDate.validate(parentName + ".endDate")...)
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "dateStarted") {
@@ -263,6 +301,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "dateEnded") {
 		//dateEnded is a primative
@@ -291,6 +333,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "state") {
 		//state is a primative
@@ -312,11 +358,20 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "owner") {
 		//owner is a struct
 		errors = append(errors, o.Owner.validate(parentName + ".owner")...)
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Owner.validate(parentName + ".owner")...)
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "voters") {
@@ -341,6 +396,10 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "candidates") {
 		//candidates is an array of structs
@@ -349,11 +408,20 @@ func (o *Election) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "results") {
 		//results is a struct
 		errors = append(errors, o.Results.validate(parentName + ".results")...)
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Results.validate(parentName + ".results")...)
+
+
 
     return errors
 }
@@ -403,6 +471,16 @@ func (o *Timer) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+		//set default if nothing came off the wire for this property
+		if !hasElem(o.MetaData.GetDeserializedProperties(), "manual") {
+			o.Manual = func() bool {
+    return true
+}()
+		}
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "date") {
 		//date is a primative
@@ -430,6 +508,10 @@ func (o *Timer) validate(parentName string) []string {
 			errors = append(errors, dateErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
     return errors
 }
@@ -464,6 +546,11 @@ func (o *Ballot) validate(parentName string) []string {
 		errors = append(errors, o.Voter.validate(parentName + ".voter")...)
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Voter.validate(parentName + ".voter")...)
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "votes") {
 		//votes is an array of structs
@@ -471,6 +558,10 @@ func (o *Ballot) validate(parentName string) []string {
 			errors = append(errors, v.validate(parentName + ".votes")...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "isSubmitted") {
@@ -492,6 +583,10 @@ func (o *Ballot) validate(parentName string) []string {
 			errors = append(errors, isSubmittedErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
     return errors
 }
@@ -548,6 +643,10 @@ func (o *User) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "email") {
 		//email is a primative
@@ -576,6 +675,10 @@ func (o *User) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "isAccount") {
 		//isAccount is a primative
@@ -596,6 +699,10 @@ func (o *User) validate(parentName string) []string {
 			errors = append(errors, isAccountErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
     return errors
 }
@@ -645,6 +752,10 @@ func (o *Candidate) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "subtitle") {
 		//subtitle is a primative
@@ -666,6 +777,10 @@ func (o *Candidate) validate(parentName string) []string {
 		}
 	}
 
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "description") {
 		//description is a primative
@@ -686,6 +801,10 @@ func (o *Candidate) validate(parentName string) []string {
 			errors = append(errors, descriptionErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
     return errors
 }
@@ -745,6 +864,10 @@ func (o *LoginRequestBody) validate(parentName string) []string {
 			errors = append(errors, emailErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 	//set check required based off of what was deserialized
 	if !hasElem(o.MetaData.GetDeserializedProperties(), "password") {
 		 errors = append(errors, fmt.Sprintf("%v.password is a required field", parentName))
@@ -770,6 +893,10 @@ func (o *LoginRequestBody) validate(parentName string) []string {
 			errors = append(errors, passwordErr...)
 		}
 	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
     return errors
 }

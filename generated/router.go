@@ -161,7 +161,8 @@ func Router() *mux.Router {
 	                                    "type": "object",
 	                                    "properties": {
 	                                        "manual": {
-	                                            "type": "boolean"
+	                                            "type": "boolean",
+	                                            "default": true
 	                                        },
 	                                        "date": {
 	                                            "type": "string",
@@ -173,7 +174,8 @@ func Router() *mux.Router {
 	                                    "type": "object",
 	                                    "properties": {
 	                                        "manual": {
-	                                            "type": "boolean"
+	                                            "type": "boolean",
+	                                            "default": true
 	                                        },
 	                                        "date": {
 	                                            "type": "string",
@@ -289,7 +291,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -301,7 +304,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -406,7 +410,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -418,7 +423,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -735,7 +741,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -747,7 +754,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -864,7 +872,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -876,7 +885,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -981,7 +991,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -993,7 +1004,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -1217,7 +1229,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -1229,7 +1242,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -1433,7 +1447,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",
@@ -1445,7 +1460,8 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "manual": {
-	                                        "type": "boolean"
+	                                        "type": "boolean",
+	                                        "default": true
 	                                    },
 	                                    "date": {
 	                                        "type": "string",

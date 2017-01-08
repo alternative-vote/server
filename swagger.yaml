@@ -240,6 +240,7 @@ definitions:
     properties:
       manual:
         type: boolean
+        default: true
       date:
         type: string
         format: date-time
