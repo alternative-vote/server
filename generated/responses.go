@@ -58,3 +58,9 @@ type GetBallotResponse struct {
     Body GetBallotResponseBody
     }
 
+type UpdateBallotResponse struct {
+    StatusCode int
+    Headers map[string]string
+    Body interface{}
+    }
+

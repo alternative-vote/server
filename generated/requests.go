@@ -274,3 +274,38 @@ func (o *GetBallotRequestPathParams) validate() []string {
     return errors
 }
 
+type UpdateBallotRequest struct {
+    Context context.Context
+    PathParams UpdateBallotRequestPathParams
+    Body Ballot
+}
+func (o *UpdateBallotRequest) validate() []string {
+    ret := []string{}
+    ret = append(ret, o.PathParams.validate()...)
+    ret = append(ret, o.Body.validate("body")...)
+    return ret
+}
+
+type UpdateBallotRequestPathParams struct {
+    Token string `json:"token"`
+}
+func (o *UpdateBallotRequestPathParams) validate() []string {
+     errors := []string{}
+    tokenErrors := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.Token, "path")
+    errors = append(errors, tokenErrors...)
+
+    return errors
+}
+

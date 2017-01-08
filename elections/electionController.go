@@ -3,14 +3,19 @@ package elections
 import (
 	"encoding/json"
 
+	"gopkg.in/olivere/elastic.v3"
+
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
-	"gopkg.in/olivere/elastic.v3"
 )
 
 type Controller struct {
 	Client *elastic.Client
+}
+
+func (o *Controller) UpdateBallot(req *UpdateBallotRequest) *UpdateBallotResponse {
+	panic(HttpError(418))
 }
 
 func checkError(err error) {

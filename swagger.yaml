@@ -165,10 +165,7 @@ paths:
     get:
       operationId: getBallot
       parameters:
-      - in: path
-        name: token
-        required: true
-        type: string
+      - $ref: "#/parameters/token"
       responses:
         '200':
           description: something
@@ -179,6 +176,20 @@ paths:
                 $ref: "#/definitions/Election"
               ballot:
                 $ref: "#/definitions/Ballot"
+    put:
+      operationId: updateBallot
+      parameters:
+      - $ref: "#/parameters/token"
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: "#/definitions/Ballot"
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
                 
 
 
@@ -190,6 +201,11 @@ parameters:
     required: true
     type: string
     format: uuid
+  token:
+    in: path
+    name: token
+    required: true
+    type: string
 
 
 definitions:

@@ -1691,6 +1691,71 @@ func Router() *mux.Router {
         responseBytes, _ := json.Marshal(response.Body)
         res.Write(responseBytes)
     }).Methods("get")    
+    //put /vote/{token}/
+    router.HandleFunc("/vote/{token}/", func(res http.ResponseWriter, req *http.Request) {
+       request := new(UpdateBallotRequest)
+        request.Context = req.Context()
+        errors := []string{}
+    
+        //'token' in form data
+        request.PathParams.Token = func(s string) string {
+            var ret string
+            if s == "" {
+                errors = append(errors, "token is a required path parameter")
+                return ret
+            }
+            var err error
+            ret, err = func(s string) (string, error) {
+            return s, nil
+        }(s)
+            if err != nil {
+                errors = append(errors, fmt.Sprintf("token: '%v' is not a valid string", s))
+            }
+        
+            return ret
+        }(mux.Vars(req)["token"])
+        
+        bodyBytes, readErr := ioutil.ReadAll(req.Body)
+        if readErr != nil {
+            panic("error reading body from the request: " + readErr.Error())
+        }
+        
+        //ok, now let's decode it into the actual request object
+        bodyError := json.Unmarshal(bodyBytes, &request.Body)
+        if bodyError != nil {
+        	errors = append(errors, "invalid JSON or wrong types: "+bodyError.Error())
+        }
+        
+        //don't bother to validate if we had deserialization errors
+        if len(errors) == 0 {
+            errors = append(errors, request.validate()...)
+        }
+        
+    
+        if len(errors) > 0 {
+            apiError := HttpError(400)
+            apiError.ValidationErrors = errors
+            panic(apiError)
+    	}
+        if RouterElectionController == nil {
+            panic(HttpError(501))
+        }
+        response := RouterElectionController.UpdateBallot(request)
+    
+        //transfer headers to the actual http response
+        if response != nil {
+            for k, v := range response.Headers {
+                res.Header().Set(k, v)
+            }
+        }
+        
+        //transfer status code to the actual http response
+        //order matters - make sure to do this after setting other header values!
+        res.WriteHeader(response.StatusCode)
+        
+        responseBytes, _ := json.Marshal(response.Body)
+        res.Write(responseBytes)
+    }).Methods("put")    
     //options /vote/{token}/
 	router.HandleFunc("/vote/{token}/", func(res http.ResponseWriter, req *http.Request) {
 	    res.Write([]byte(`{
@@ -1859,6 +1924,59 @@ func Router() *mux.Router {
 	                    }
 	                }
 	            }
+	        },
+	        "put": {
+	            "operationId": "updateBallot",
+	            "parameters": [
+	                {
+	                    "in": "path",
+	                    "name": "token",
+	                    "required": true,
+	                    "type": "string"
+	                },
+	                {
+	                    "name": "body",
+	                    "in": "body",
+	                    "required": true,
+	                    "schema": {
+	                        "type": "object",
+	                        "properties": {
+	                            "voter": {
+	                                "type": "string",
+	                                "format": "email"
+	                            },
+	                            "votes": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "object",
+	                                    "properties": {
+	                                        "title": {
+	                                            "type": "string"
+	                                        },
+	                                        "subtitle": {
+	                                            "type": "string"
+	                                        },
+	                                        "description": {
+	                                            "type": "string"
+	                                        }
+	                                    }
+	                                }
+	                            },
+	                            "isSubmitted": {
+	                                "type": "boolean"
+	                            }
+	                        }
+	                    }
+	                }
+	            ],
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object"
+	                    }
+	                }
+	            }
 	        }
 	    }
 	}`))
@@ -1882,7 +2000,8 @@ func Router() *mux.Router {
 	            "POST": "login"
 	        },
 	        "/vote/{token}": {
-	            "GET": "getBallot"
+	            "GET": "getBallot",
+	            "PUT": "updateBallot"
 	        }
 	    },
 	    "methods": {}
