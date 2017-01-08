@@ -29,7 +29,7 @@ func (o *Controller) UpdateElection(req *UpdateElectionRequest) *UpdateElectionR
 
 	//There's only certain fields that can be updated by the client
 	//TODO: update roles
-	updateableProps := []string{"title", "subtitle", "description", "startDate", "endDate", "candidates"}
+	updateableProps := []string{"title", "subtitle", "description", "startDate", "endDate", "candidates", "voters"}
 	propsToUpdate := utils.Intersection(updateableProps, req.Body.MetaData.GetDeserializedProperties())
 	utils.Extend(&dbElection, &wireElection, utils.TitleArray(propsToUpdate))
 

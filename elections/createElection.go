@@ -17,6 +17,8 @@ func (o *Controller) CreateElection(req *CreateElectionRequest) *CreateElectionR
 			Details("use PUT /elections/{id} if you are trying to update an existing election"))
 	}
 
+	claims := utils.GetClaims(req.Context)
+
 	var election domain.Election
 
 	election.Election = req.Body
@@ -25,6 +27,10 @@ func (o *Controller) CreateElection(req *CreateElectionRequest) *CreateElectionR
 	election.DateCreated.Time = time.Now().UTC()
 	election.DateUpdated.Time = time.Now().UTC()
 	election.State = consts.Edit
+
+	//owner comes from auth claims
+	election.Owner.Email = claims.Email
+	election.Owner.IsAccount = true
 
 	//create the election
 	_, err := o.Client.Index().

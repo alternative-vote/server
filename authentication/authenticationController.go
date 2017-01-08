@@ -8,7 +8,7 @@ import (
 var Secret = []byte("boggleboggle1234")
 
 type CustomClaims struct {
-	Username string
+	Email string
 	jwt.StandardClaims
 }
 
@@ -16,16 +16,16 @@ type Controller struct {
 }
 
 func (o *Controller) Login(req *LoginRequest) *LoginResponse {
-	username, password := req.Body.Username, req.Body.Password
+	email, password := req.Body.Email, req.Body.Password
 
 	//hardcoded single user for now
-	if username != "test" || password != "test" {
+	if email != "test@fake.com" || password != "test" {
 		panic(HttpError(401))
 	}
 
 	//stuff whatever info we want into the token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, CustomClaims{
-		Username: username,
+		Email: email,
 	})
 
 	//sign the token with the hardcoded secret

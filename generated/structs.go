@@ -1,11 +1,5 @@
 package generated
 
-type ElectionRoles struct {
-    Voters Role `json:"voters"`
-    Administrators Role `json:"administrators"`
-    MetaData SerializationMetadata `json:"-"`
-}
-
 type ElectionResults struct {
     OrderedCandidates []string `json:"orderedCandidates"`
     MetaData SerializationMetadata `json:"-"`
@@ -23,15 +17,10 @@ type Election struct {
     DateStarted APITime `json:"dateStarted"`
     DateEnded APITime `json:"dateEnded"`
     State string `json:"state"`
-    Roles ElectionRoles `json:"roles"`
+    Owner User `json:"owner"`
+    Voters []string `json:"voters"`
     Candidates []Candidate `json:"candidates"`
     Results ElectionResults `json:"results"`
-    MetaData SerializationMetadata `json:"-"`
-}
-
-type Role struct {
-    IsPublic bool `json:"isPublic"`
-    Members []User `json:"members"`
     MetaData SerializationMetadata `json:"-"`
 }
 
@@ -63,7 +52,7 @@ type Candidate struct {
 }
 
 type LoginRequestBody struct {
-    Username string `json:"username"`
+    Email string `json:"email"`
     Password string `json:"password"`
     MetaData SerializationMetadata `json:"-"`
 }

@@ -192,63 +192,27 @@ func Router() *mux.Router {
 	                                "state": {
 	                                    "type": "string"
 	                                },
-	                                "roles": {
+	                                "owner": {
 	                                    "type": "object",
 	                                    "properties": {
-	                                        "voters": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "isPublic": {
-	                                                    "type": "boolean"
-	                                                },
-	                                                "members": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "id": {
-	                                                                "type": "string",
-	                                                                "format": "uuid"
-	                                                            },
-	                                                            "email": {
-	                                                                "type": "string",
-	                                                                "format": "email"
-	                                                            },
-	                                                            "isAccount": {
-	                                                                "type": "boolean"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                        "id": {
+	                                            "type": "string",
+	                                            "format": "uuid"
 	                                        },
-	                                        "administrators": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "isPublic": {
-	                                                    "type": "boolean"
-	                                                },
-	                                                "members": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "id": {
-	                                                                "type": "string",
-	                                                                "format": "uuid"
-	                                                            },
-	                                                            "email": {
-	                                                                "type": "string",
-	                                                                "format": "email"
-	                                                            },
-	                                                            "isAccount": {
-	                                                                "type": "boolean"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                        "email": {
+	                                            "type": "string",
+	                                            "format": "email"
+	                                        },
+	                                        "isAccount": {
+	                                            "type": "boolean"
 	                                        }
+	                                    }
+	                                },
+	                                "voters": {
+	                                    "type": "array",
+	                                    "items": {
+	                                        "type": "string",
+	                                        "format": "email"
 	                                    }
 	                                },
 	                                "candidates": {
@@ -356,63 +320,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -509,63 +437,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -874,63 +766,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -1039,63 +895,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -1192,63 +1012,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -1464,63 +1248,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -1716,63 +1464,27 @@ func Router() *mux.Router {
 	                            "state": {
 	                                "type": "string"
 	                            },
-	                            "roles": {
+	                            "owner": {
 	                                "type": "object",
 	                                "properties": {
-	                                    "voters": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
 	                                    },
-	                                    "administrators": {
-	                                        "type": "object",
-	                                        "properties": {
-	                                            "isPublic": {
-	                                                "type": "boolean"
-	                                            },
-	                                            "members": {
-	                                                "type": "array",
-	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "id": {
-	                                                            "type": "string",
-	                                                            "format": "uuid"
-	                                                        },
-	                                                        "email": {
-	                                                            "type": "string",
-	                                                            "format": "email"
-	                                                        },
-	                                                        "isAccount": {
-	                                                            "type": "boolean"
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
-	                                        }
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
 	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "string",
+	                                    "format": "email"
 	                                }
 	                            },
 	                            "candidates": {
@@ -2175,12 +1887,13 @@ func Router() *mux.Router {
 	                    "schema": {
 	                        "type": "object",
 	                        "required": [
-	                            "username",
+	                            "email",
 	                            "password"
 	                        ],
 	                        "properties": {
-	                            "username": {
-	                                "type": "string"
+	                            "email": {
+	                                "type": "string",
+	                                "format": "email"
 	                            },
 	                            "password": {
 	                                "type": "string"

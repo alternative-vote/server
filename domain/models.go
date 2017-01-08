@@ -7,6 +7,8 @@ type Election struct {
 	Ballots []generated.Ballot
 }
 
+
+
 // type Election struct {
 // 	ID          string
 // 	DateCreated time.Time
