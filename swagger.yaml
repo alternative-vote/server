@@ -190,6 +190,11 @@ paths:
           description: something
           schema:
             type: object
+            properties:
+              election:
+                $ref: "#/definitions/Election"
+              ballot:
+                $ref: "#/definitions/Ballot"
                 
 
 

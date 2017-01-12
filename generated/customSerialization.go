@@ -154,3 +154,22 @@ func (o *GetBallotResponseBody) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type updateballotresponsebody UpdateBallotResponseBody
+
+func (o *UpdateBallotResponseBody) UnmarshalJSON(data []byte) error {
+	//deserialize normally (using our private dummy struct to prevent looping)
+	privateObject := new(updateballotresponsebody)
+	err := json.Unmarshal(data, privateObject)
+	if err != nil {
+		return err
+	}
+	*o = UpdateBallotResponseBody(*privateObject)
+
+	//ok, if that worked lets fill in some metadata
+	for _, propertyName := range getFields(data) {
+		o.MetaData.AddDeserializedProperty(propertyName)
+	}
+
+	return nil
+}
+

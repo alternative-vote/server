@@ -61,6 +61,6 @@ type GetBallotResponse struct {
 type UpdateBallotResponse struct {
     StatusCode int
     Headers map[string]string
-    Body interface{}
+    Body UpdateBallotResponseBody
     }
 

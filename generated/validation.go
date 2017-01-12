@@ -971,3 +971,52 @@ func (o *GetBallotResponseBody) validate(parentName string) []string {
     return errors
 }
 
+func (o *UpdateBallotResponseBody) extraFields(parentName string) []string {
+	ret := []string{}
+
+    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
+		if !hasElem([]string{"election", "ballot"}, fieldFromJSON) {
+			ret = append(ret, parentName+"."+fieldFromJSON)
+		}
+	}
+
+    return ret
+}
+
+func (o *UpdateBallotResponseBody) validate(parentName string) []string {
+	errors := []string{}
+
+    //check for extra fields first
+    extraFields := o.extraFields(parentName)
+	if len(extraFields) > 0 {
+		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
+	}
+
+
+	//go through each property
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "election") {
+		//election is a struct
+		errors = append(errors, o.Election.validate(parentName + ".election")...)
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Election.validate(parentName + ".election")...)
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "ballot") {
+		//ballot is a struct
+		errors = append(errors, o.Ballot.validate(parentName + ".ballot")...)
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Ballot.validate(parentName + ".ballot")...)
+
+
+
+    return errors
+}
+

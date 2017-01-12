@@ -63,3 +63,9 @@ type GetBallotResponseBody struct {
     MetaData SerializationMetadata `json:"-"`
 }
 
+type UpdateBallotResponseBody struct {
+    Election Election `json:"election"`
+    Ballot Ballot `json:"ballot"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
