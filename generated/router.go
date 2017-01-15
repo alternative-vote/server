@@ -24,12 +24,203 @@ var _ = fmt.Sprint("boggle")
 var _ = strings.Compare("a", "b")
 var _ = json.Decoder{}
 
+var RouterClientController IClientController
 var RouterElectionController IElectionController
 var RouterAuthenticationController IAuthenticationController
 
 func Router() *mux.Router {
     router := mux.NewRouter()
 	router.KeepContext = true
+
+    //get /
+	router.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+	   if RouterClientController == nil {
+	        panic(HttpError(501))
+	    }
+	    RouterClientController.Index(res, req)
+	}).Methods("get")    
+    //options /
+	router.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+	    res.Write([]byte(`{
+	    "childRoutes": {
+	        "/elections": {
+	            "GET": "listElections",
+	            "POST": "createElection"
+	        },
+	        "/login": {
+	            "POST": "login"
+	        },
+	        "/vote/{token}": {
+	            "GET": "getBallot",
+	            "PUT": "updateBallot"
+	        }
+	    },
+	    "methods": {
+	        "get": {
+	            "operationId": "index",
+	            "x-raw-handler": true,
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object",
+	                        "properties": {
+	                            "election": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
+	                                    "dateCreated": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "dateUpdated": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "title": {
+	                                        "type": "string"
+	                                    },
+	                                    "subtitle": {
+	                                        "type": "string"
+	                                    },
+	                                    "description": {
+	                                        "type": "string"
+	                                    },
+	                                    "startDate": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "manual": {
+	                                                "type": "boolean",
+	                                                "default": true
+	                                            },
+	                                            "date": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            }
+	                                        }
+	                                    },
+	                                    "endDate": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "manual": {
+	                                                "type": "boolean",
+	                                                "default": true
+	                                            },
+	                                            "date": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            }
+	                                        }
+	                                    },
+	                                    "dateStarted": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "dateEnded": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "state": {
+	                                        "type": "string"
+	                                    },
+	                                    "owner": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "id": {
+	                                                "type": "string",
+	                                                "format": "uuid"
+	                                            },
+	                                            "email": {
+	                                                "type": "string",
+	                                                "format": "email"
+	                                            },
+	                                            "isAccount": {
+	                                                "type": "boolean"
+	                                            }
+	                                        }
+	                                    },
+	                                    "voters": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "string",
+	                                            "format": "email"
+	                                        }
+	                                    },
+	                                    "candidates": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "title": {
+	                                                    "type": "string"
+	                                                },
+	                                                "subtitle": {
+	                                                    "type": "string"
+	                                                },
+	                                                "description": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "results": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "orderedCandidates": {
+	                                                "type": "array",
+	                                                "items": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    }
+	                                }
+	                            },
+	                            "ballot": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "voter": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "votes": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "title": {
+	                                                    "type": "string"
+	                                                },
+	                                                "subtitle": {
+	                                                    "type": "string"
+	                                                },
+	                                                "description": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "isSubmitted": {
+	                                        "type": "boolean"
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}`))
+	}).Methods("options")
+    
+    //405 handler for /
+    router.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+	    panic(HttpError(405))
+	})
 
     //get /elections/
     router.HandleFunc("/elections/", func(res http.ResponseWriter, req *http.Request) {
@@ -2149,7 +2340,165 @@ func Router() *mux.Router {
 	            "PUT": "updateBallot"
 	        }
 	    },
-	    "methods": {}
+	    "methods": {
+	        "get": {
+	            "operationId": "index",
+	            "x-raw-handler": true,
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object",
+	                        "properties": {
+	                            "election": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
+	                                    "dateCreated": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "dateUpdated": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "title": {
+	                                        "type": "string"
+	                                    },
+	                                    "subtitle": {
+	                                        "type": "string"
+	                                    },
+	                                    "description": {
+	                                        "type": "string"
+	                                    },
+	                                    "startDate": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "manual": {
+	                                                "type": "boolean",
+	                                                "default": true
+	                                            },
+	                                            "date": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            }
+	                                        }
+	                                    },
+	                                    "endDate": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "manual": {
+	                                                "type": "boolean",
+	                                                "default": true
+	                                            },
+	                                            "date": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            }
+	                                        }
+	                                    },
+	                                    "dateStarted": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "dateEnded": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    },
+	                                    "state": {
+	                                        "type": "string"
+	                                    },
+	                                    "owner": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "id": {
+	                                                "type": "string",
+	                                                "format": "uuid"
+	                                            },
+	                                            "email": {
+	                                                "type": "string",
+	                                                "format": "email"
+	                                            },
+	                                            "isAccount": {
+	                                                "type": "boolean"
+	                                            }
+	                                        }
+	                                    },
+	                                    "voters": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "string",
+	                                            "format": "email"
+	                                        }
+	                                    },
+	                                    "candidates": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "title": {
+	                                                    "type": "string"
+	                                                },
+	                                                "subtitle": {
+	                                                    "type": "string"
+	                                                },
+	                                                "description": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "results": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "orderedCandidates": {
+	                                                "type": "array",
+	                                                "items": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    }
+	                                }
+	                            },
+	                            "ballot": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "voter": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "votes": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "title": {
+	                                                    "type": "string"
+	                                                },
+	                                                "subtitle": {
+	                                                    "type": "string"
+	                                                },
+	                                                "description": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "isSubmitted": {
+	                                        "type": "boolean"
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
 	}`))
 	}).Methods("options")
 

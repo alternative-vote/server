@@ -4,6 +4,11 @@ import "net/http"
 
 var _ = http.MethodGet
 
+type IClientController interface{
+    Index(res http.ResponseWriter, req *http.Request)
+    
+}
+
 type IElectionController interface{
     ListElections(*ListElectionsRequest) *ListElectionsResponse
     
