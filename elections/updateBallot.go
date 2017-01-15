@@ -14,6 +14,10 @@ func (o *Controller) UpdateBallot(req *UpdateBallotRequest) *UpdateBallotRespons
 	var ballotSaved bool
 	for i := range election.Ballots {
 		if election.Ballots[i].Voter == claims.EmailAddress {
+			if election.Ballots[i].IsSubmitted {
+				panic(HttpError(409).Message("ballot has already been submitted"))
+			}
+
 			election.Ballots[i] = ballot
 			ballotSaved = true
 			break
@@ -24,6 +28,7 @@ func (o *Controller) UpdateBallot(req *UpdateBallotRequest) *UpdateBallotRespons
 	}
 	o.saveElection(election)
 
+	
 	election.Voters = []string{} //don't send down the list of voters for the ballot view
 	return &UpdateBallotResponse{
 		StatusCode: 200,

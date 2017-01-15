@@ -23,6 +23,7 @@ func (o *Controller) ListElections(req *ListElectionsRequest) *ListElectionsResp
 	var e domain.Election
 	for _, item := range searchResults.Each(reflect.TypeOf(e)) {
 		if election, ok := item.(domain.Election); ok {
+			
 			elections = append(elections, election.Election)
 		}
 	}

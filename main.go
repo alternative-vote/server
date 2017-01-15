@@ -17,7 +17,6 @@ import (
 )
 
 func main() {
-
 	client := initDB()
 
 	//Auth middleware for admin stuff

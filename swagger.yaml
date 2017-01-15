@@ -256,6 +256,10 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/Candidate"
+      # ballots:
+      #   type: array
+      #   items:
+      #     $ref: "#/definitions/Ballot"
       results:
         type: object
         properties:

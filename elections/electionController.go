@@ -40,7 +40,11 @@ func (o *Controller) getElectionById(id string) domain.Election {
 	checkError(err)
 
 	var election domain.Election
-	json.Unmarshal(*results.Source, &election)
+	err = json.Unmarshal(*results.Source, &election)
+	if err != nil {
+		panic(err)
+	}
+
 	return election
 }
 

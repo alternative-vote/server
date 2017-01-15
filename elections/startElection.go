@@ -56,6 +56,7 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 		go sendEmail(election, emailAddress)
 	}
 
+	
 	return &StartElectionResponse{
 		StatusCode: 200,
 		Body:       election.Election,

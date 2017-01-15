@@ -26,6 +26,7 @@ func (o *Controller) GetBallot(req *GetBallotRequest) *GetBallotResponse {
 		o.saveElection(election)
 	}
 
+	
 	election.Voters = []string{} //don't send down the list of voters for the ballot view
 	return &GetBallotResponse{
 		StatusCode: 200,
