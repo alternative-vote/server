@@ -54,7 +54,7 @@ func main() {
 	//if no file is found, it will just return index.html
 	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		data, err := ioutil.ReadFile(path.Join("./client/", req.URL.Path))
-		if err != nil && strings.Contains(err.Error(), "no such file or directory") {
+		if err != nil && strings.Contains(err.Error(), "no such file or directory") || strings.Contains(err.Error(), "is a directory") {
 			data, _ = ioutil.ReadFile(path.Join("./client/", "index.html"))
 			http.ServeContent(res, req, "index.html", time.Now(), bytes.NewReader(data))
 			return
