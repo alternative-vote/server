@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"gopkg.in/olivere/elastic.v3"
@@ -22,7 +23,11 @@ import (
 )
 
 func main() {
-	// panic(http.ListenAndServe(":8000", http.FileServer(http.Dir("./client"))))
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "8000"
+	}
 
 	esClient := initDB()
 
@@ -65,7 +70,8 @@ func main() {
 		http.ServeContent(res, req, req.URL.Path, time.Now(), bytes.NewReader(data))
 	})
 
-	http.ListenAndServe("127.0.0.1:8000", nil)
+	fmt.Println("listening at localhost:" + port)
+	http.ListenAndServe(":"+port, nil)
 
 }
 
