@@ -1,0 +1,34 @@
+hash: 2577e54b8d10cfe61cf8f02da5e78d558f96731405effb671a413b5932792884
+updated: 2017-01-12T17:04:11.197159304-07:00
+imports:
+- name: github.com/dgrijalva/jwt-go
+  version: a601269ab70c205d26370c16f7c81e9017c14e04
+- name: github.com/go-gomail/gomail
+  version: 81ebce5c23dfd25c6c67194b37d3dd3f338c98b1
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 757bef944d0f21880861c2dd9c871ca543023cba
+- name: github.com/jtolds/gls
+  version: bb0351aa7eb6f322f32667d51375f26a2bca6628
+- name: github.com/Khelldar/altVote
+  version: 740e9198dc68c2c190fbc5849989e5b95ba81b16
+- name: github.com/satori/go.uuid
+  version: b061729afc07e77a8aa4fad0a2fd840958f1942a
+- name: github.com/smartystreets/assertions
+  version: 26acb9229f421449ac63d014995b282d59261a8b
+- name: github.com/smartystreets/goconvey
+  version: 3bd662eac601ad6436e64776af2e112069eb2edc
+- name: github.com/urfave/negroni
+  version: 43335025fafdef38d209080c1c67f5dff60b969a
+- name: golang.org/x/crypto
+  version: f6b343c37ca80bfa8ea539da67a0b621f84fab1d
+- name: golang.org/x/net
+  version: 45e771701b814666a7eb299e6c7a57d0b1799e91
+- name: golang.org/x/text
+  version: a49bea13b776691cb1b49873e5d8df96ec74831a
+- name: golang.org/x/tools
+  version: 908849c3379245f71612058fbf92cf6bf58c3c75
+- name: gopkg.in/olivere/elastic.v3
+  version: 060365a7e27c56c938b234824ef7f9a3a7834b99
+devImports: []

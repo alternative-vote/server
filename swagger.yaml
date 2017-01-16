@@ -1,0 +1,342 @@
+---
+swagger: '2.0'
+info:
+  title: Case Service API
+  version: v1
+  contact:
+    url: http://github.schq.secious.com/WebUI/CaseService/wiki/Public-API-Docs
+  description: Logrhythm Case Service API
+host: localhost:3000
+schemes:
+- https
+basePath: "/api"
+produces:
+- application/json
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  "/elections":
+    x-swagger-router-controller: election
+    get:
+      operationId: listElections
+      responses:
+        '200':
+          description: something
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Election"
+    post:
+      operationId: createElection
+      security:
+      - Bearer: []
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: "#/definitions/Election"
+      responses:
+        '201':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
+  "/elections/{id}":
+    x-swagger-router-controller: election
+    get:
+      operationId: getElection
+      parameters:
+      - $ref: "#/parameters/id"
+      responses:
+        '200':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
+    put:
+      operationId: updateElection
+      parameters:
+      - $ref: "#/parameters/id"
+      - name: body
+        in: body
+        required: true
+        schema:
+            $ref: "#/definitions/Election"
+      responses:
+        '200':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
+    delete:
+      operationId: deleteElection
+      parameters:
+      - $ref: "#/parameters/id"
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
+  "/elections/{id}/actions/start":
+    x-swagger-router-controller: election
+    put:
+      operationId: startElection
+      parameters:
+      - $ref: "#/parameters/id"
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+      responses:
+        '200':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
+  "/elections/{id}/actions/stop":
+    x-swagger-router-controller: election
+    put:
+      operationId: stopElection
+      parameters:
+      - $ref: "#/parameters/id"
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+      responses:
+        '200':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
+#   "/elections/{id}/ballot":
+#     x-swagger-router-controller: election
+#     get:
+#       operationId: getBallot
+#       parameters:
+#       - $ref: "#/parameters/id"
+#       responses:
+#         '200':
+#           description: something
+#           schema:
+#             $ref: "#/definitions/Ballot"
+#     post:
+#       operationId: upsertBallot
+#       parameters:
+#       - $ref: "#/parameters/id"
+#       - name: body
+#         in: body
+#         required: true
+#         schema:
+#           $ref: "#/definitions/Ballot"
+#       responses:
+#         '200':
+#           description: something
+#           schema:
+#             $ref: "#/definitions/Ballot"
+  "/login":
+    x-swagger-router-controller: authentication
+    post:
+      operationId: login
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+          - email
+          - password
+          properties:
+            email:
+              type: string
+              format: email
+            password:
+              type: string
+      responses:
+        '200': 
+          description: something
+          schema:
+            type: object
+
+  "/vote/{token}":
+    x-swagger-router-controller: election
+    get:
+      operationId: getBallot
+      parameters:
+      - $ref: "#/parameters/token"
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
+            properties:
+              election:
+                $ref: "#/definitions/Election"
+              ballot:
+                $ref: "#/definitions/Ballot"
+    put:
+      operationId: updateBallot
+      parameters:
+      - $ref: "#/parameters/token"
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: "#/definitions/Ballot"
+      responses:
+        '200':
+          description: something
+          schema:
+            type: object
+            properties:
+              election:
+                $ref: "#/definitions/Election"
+              ballot:
+                $ref: "#/definitions/Ballot"
+
+  # "/":
+  #   x-swagger-router-controller: client
+  #   get:
+  #     operationId: index
+  #     x-raw-handler: true
+  #     parameters: 
+  #     - name: restOfRoute
+  #       type: string
+  #     responses:
+  #       '200':
+  #         description: something
+  #         schema:
+  #           type: object
+            
+
+parameters:
+  id:
+    in: path
+    name: id
+    required: true
+    type: string
+    format: uuid
+  token:
+    in: path
+    name: token
+    required: true
+    type: string
+
+
+definitions:
+
+  Election:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      dateCreated:
+        type: string
+        format: date-time
+      dateUpdated:
+        type: string
+        format: date-time
+      title:
+        type: string
+      subtitle:
+        type: string
+      description:
+        type: string
+      startDate: 
+        $ref: "#/definitions/Timer"
+      endDate: 
+        $ref: "#/definitions/Timer"
+      dateStarted:
+        type: string
+        format: date-time
+      dateEnded:
+        type: string
+        format: date-time
+      state:
+        type: string
+      owner:
+        $ref: "#/definitions/User"
+      voters:
+        type: array
+        items:
+          type: string
+          format: email
+      candidates:
+        type: array
+        items:
+          $ref: "#/definitions/Candidate"
+      # ballots:
+      #   type: array
+      #   items:
+      #     $ref: "#/definitions/Ballot"
+      results:
+        type: object
+        properties:
+          orderedCandidates:
+            type: array
+            items:
+              type: string
+
+#   Role:
+#     type: object
+#     properties:
+#       isPublic:
+#         type: boolean
+#       members:
+#         type: array
+#         items:
+#           $ref: "#/definitions/User"
+
+
+  Timer:
+    type: object
+    properties:
+      manual:
+        type: boolean
+        default: true
+      date:
+        type: string
+        format: date-time
+
+  
+
+  Ballot:
+    type: object
+    properties:
+      voter: 
+        type: string
+        format: email
+      votes:
+        type: array
+        items:
+          $ref: "#/definitions/Candidate"
+      isSubmitted:
+        type: boolean
+        
+
+
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+      email:
+        type: string
+        format: email
+      isAccount:
+        type: boolean
+      
+  Candidate:
+    type: object
+    properties:
+      title:
+        type: string
+      subtitle:
+        type: string
+      description:
+        type: string
+      
