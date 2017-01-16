@@ -69,6 +69,10 @@ func getClaims(tokenString string) VoterClaims {
 		return consts.Secret, nil
 	})
 
+	if token == nil {
+		panic(HttpError(404).Message("This election has been removed or never existed."))
+	}
+
 	if !token.Valid {
 		panic(HttpError(401))
 	}
