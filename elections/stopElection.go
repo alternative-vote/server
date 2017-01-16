@@ -6,7 +6,6 @@ import (
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionResponse {
@@ -52,7 +51,7 @@ func calculateResults(election *domain.Election) {
 	for _, c := range election.Candidates {
 		candidates = append(candidates, c.Title)
 	}
-	spew.Dump(election)
+
 	for _, ballot := range election.Ballots {
 		votes := []string{}
 		for _, vote := range ballot.Votes {
@@ -60,8 +59,5 @@ func calculateResults(election *domain.Election) {
 		}
 		ballots = append(ballots, votes)
 	}
-
-	spew.Dump(candidates)
-	spew.Dump(ballots)
 
 }
