@@ -24,18 +24,18 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 	checkError(err)
 	json.Unmarshal(*results.Source, &election)
 
-	// //if we are alrleady running, then early return
-	// if election.State == consts.Running {
-	// 	return &StartElectionResponse{
-	// 		StatusCode: 200,
-	// 		Body:       election.Election,
-	// 	}
-	// }
+	//if we are alrleady running, then early return
+	if election.State == consts.Running {
+		return &StartElectionResponse{
+			StatusCode: 200,
+			Body:       election.Election,
+		}
+	}
 
-	// //if this is a complete election, then it's a 409
-	// if election.State == consts.Complete {
-	// 	panic(HttpError(409).Message("can't start an election that's complete"))
-	// }
+	//if this is a complete election, then it's a 409
+	if election.State == consts.Complete {
+		panic(HttpError(409).Message("can't start an election that's complete"))
+	}
 
 	//otherwise, let's change the statue of this election
 	election.State = consts.Running
@@ -56,7 +56,6 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 		go sendEmail(election, emailAddress)
 	}
 
-	
 	return &StartElectionResponse{
 		StatusCode: 200,
 		Body:       election.Election,

@@ -31,9 +31,6 @@ func main() {
 
 	esClient := initDB()
 
-	//Auth middleware for admin stuff
-	generated.AddMiddleware(adminAuthMiddleare, `/elections/{restOfRoute:.*}`)
-
 	//link up controllers and start the server
 	generated.RouterElectionController = &elections.Controller{Client: esClient}
 	generated.RouterAuthenticationController = &authentication.Controller{}
@@ -46,6 +43,9 @@ func main() {
 		}
 		next(res, req)
 	})
+
+	//Auth middleware for admin stuff
+	generated.AddMiddleware(adminAuthMiddleare, `/elections/{restOfRoute:.*}`)
 
 	//subrouter for all API stuff
 	http.Handle("/api/", generated.Stack())
