@@ -1,15 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"time"
 
 	"gopkg.in/olivere/elastic.v3"
 
 	"strings"
 
+	"path"
+
 	"github.com/alternative-vote/server/authentication"
-	"github.com/alternative-vote/server/client"
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/elections"
 	"github.com/alternative-vote/server/generated"
@@ -18,6 +22,8 @@ import (
 )
 
 func main() {
+	// panic(http.ListenAndServe(":8000", http.FileServer(http.Dir("./client"))))
+
 	esClient := initDB()
 
 	//Auth middleware for admin stuff
@@ -26,8 +32,41 @@ func main() {
 	//link up controllers and start the server
 	generated.RouterElectionController = &elections.Controller{Client: esClient}
 	generated.RouterAuthenticationController = &authentication.Controller{}
-	generated.RouterClientController = &client.ClientController{}
-	generated.StartServer("127.0.0.1:8000")
+
+	//url rewrite to strip /api - this could go away if you put /api in the swagger file
+	generated.AddMiddleware(func(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+		req.URL.Path = strings.TrimLeft(req.URL.Path, "/api")
+		if !strings.HasPrefix(req.URL.Path, "/") {
+			req.URL.Path = "/" + req.URL.Path
+		}
+		next(res, req)
+	})
+
+	//subrouter for all API stuff
+	http.Handle("/api/", generated.Stack())
+
+	//this will try to serve files from the client directory by matching path to filename
+	//if no file is found, it will just return index.html
+	http.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
+		data, err := ioutil.ReadFile(path.Join("./client/", req.URL.Path))
+		if err != nil && strings.Contains(err.Error(), "no such file or directory") {
+			data, _ = ioutil.ReadFile(path.Join("./client/", "index.html"))
+			http.ServeContent(res, req, "index.html", time.Now(), bytes.NewReader(data))
+			return
+		}
+
+		if err != nil {
+			fmt.Println(err)
+			res.WriteHeader(500)
+			res.Write([]byte("unknown error serving static content"))
+			return
+		}
+
+		http.ServeContent(res, req, req.URL.Path, time.Now(), bytes.NewReader(data))
+	})
+
+	http.ListenAndServe("127.0.0.1:8000", nil)
+
 }
 
 func initDB() *elastic.Client {

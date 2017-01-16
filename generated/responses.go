@@ -4,11 +4,6 @@ import "io"
 
 var _, _ = io.Pipe()
 
-type IndexResponse struct {
-    StatusCode int
-    Headers map[string]string
-}
-
 type ListElectionsResponse struct {
     StatusCode int
     Headers map[string]string

@@ -196,25 +196,21 @@ paths:
               ballot:
                 $ref: "#/definitions/Ballot"
 
-  "/":
-    x-swagger-router-controller: client
-    get:
-      operationId: index
-      x-raw-handler: true
-      responses:
-        '200':
-          description: something
-          schema:
-            type: object
-            properties:
-              election:
-                $ref: "#/definitions/Election"
-              ballot:
-                $ref: "#/definitions/Ballot"
-                
+  # "/":
+  #   x-swagger-router-controller: client
+  #   get:
+  #     operationId: index
+  #     x-raw-handler: true
+  #     parameters: 
+  #     - name: restOfRoute
+  #       type: string
+  #     responses:
+  #       '200':
+  #         description: something
+  #         schema:
+  #           type: object
+            
 
-
-  
 parameters:
   id:
     in: path

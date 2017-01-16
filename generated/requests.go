@@ -6,15 +6,6 @@ import (
 )
 
 
-type IndexRequest struct {
-    Context context.Context
-}
-func (o *IndexRequest) validate() []string {
-    ret := []string{}
-    return ret
-}
-
-
 type ListElectionsRequest struct {
     Context context.Context
 }
