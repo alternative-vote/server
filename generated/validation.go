@@ -2,127 +2,11 @@ package generated
 
 import "fmt"
 
-func (o *ElectionResultsElectionsRounds) extraFields(parentName string) []string {
-	ret := []string{}
-
-    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"candidate", "votes"}, fieldFromJSON) {
-			ret = append(ret, parentName+"."+fieldFromJSON)
-		}
-	}
-
-    return ret
-}
-
-func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
-	errors := []string{}
-
-    //check for extra fields first
-    extraFields := o.extraFields(parentName)
-	if len(extraFields) > 0 {
-		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
-	}
-
-
-	//go through each property
-
-	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "candidate") {
-		//candidate is a primative
-		candidateErr := func(propValue string, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-
-
-
-
-
-    return ret
-}(o.Candidate, parentName)
-		if candidateErr != nil {
-			errors = append(errors, candidateErr...)
-		}
-	}
-
-	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
-
-
-
-	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "votes") {
-		//votes is a primative
-		votesErr := func(propValue int64, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-
-
-
-
-
-    return ret
-}(o.Votes, parentName)
-		if votesErr != nil {
-			errors = append(errors, votesErr...)
-		}
-	}
-
-	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
-
-
-
-    return errors
-}
-
-func (o *ElectionResultsElections) extraFields(parentName string) []string {
-	ret := []string{}
-
-    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"rounds"}, fieldFromJSON) {
-			ret = append(ret, parentName+"."+fieldFromJSON)
-		}
-	}
-
-    return ret
-}
-
-func (o *ElectionResultsElections) validate(parentName string) []string {
-	errors := []string{}
-
-    //check for extra fields first
-    extraFields := o.extraFields(parentName)
-	if len(extraFields) > 0 {
-		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
-	}
-
-
-	//go through each property
-
-	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "rounds") {
-		//rounds is an array of structs
-		for _, v := range o.Rounds {
-			errors = append(errors, v.validate(parentName + ".rounds")...)
-		}
-	}
-
-	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
-
-
-
-    return errors
-}
-
 func (o *ElectionResults) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"orderedCandidates", "elections"}, fieldFromJSON) {
+		if !hasElem([]string{"orderedCandidates", "fullData"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -155,10 +39,25 @@ func (o *ElectionResults) validate(parentName string) []string {
 
 
 	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "elections") {
-		//elections is an array of structs
-		for _, v := range o.Elections {
-			errors = append(errors, v.validate(parentName + ".elections")...)
+	if hasElem(o.MetaData.GetDeserializedProperties(), "fullData") {
+		//fullData is an array of primatives
+		for _, v := range o.FullData {
+			fullDataErr := func(propValue interface{}, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(v, parentName)
+			if fullDataErr != nil {
+				errors = append(errors, fullDataErr...)
+			}
 		}
 	}
 

@@ -2,44 +2,6 @@ package generated
 
 import "encoding/json"
 
-type electionresultselectionsrounds ElectionResultsElectionsRounds
-
-func (o *ElectionResultsElectionsRounds) UnmarshalJSON(data []byte) error {
-	//deserialize normally (using our private dummy struct to prevent looping)
-	privateObject := new(electionresultselectionsrounds)
-	err := json.Unmarshal(data, privateObject)
-	if err != nil {
-		return err
-	}
-	*o = ElectionResultsElectionsRounds(*privateObject)
-
-	//ok, if that worked lets fill in some metadata
-	for _, propertyName := range getFields(data) {
-		o.MetaData.AddDeserializedProperty(propertyName)
-	}
-
-	return nil
-}
-
-type electionresultselections ElectionResultsElections
-
-func (o *ElectionResultsElections) UnmarshalJSON(data []byte) error {
-	//deserialize normally (using our private dummy struct to prevent looping)
-	privateObject := new(electionresultselections)
-	err := json.Unmarshal(data, privateObject)
-	if err != nil {
-		return err
-	}
-	*o = ElectionResultsElections(*privateObject)
-
-	//ok, if that worked lets fill in some metadata
-	for _, propertyName := range getFields(data) {
-		o.MetaData.AddDeserializedProperty(propertyName)
-	}
-
-	return nil
-}
-
 type electionresults ElectionResults
 
 func (o *ElectionResults) UnmarshalJSON(data []byte) error {

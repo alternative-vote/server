@@ -33,7 +33,7 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	election.State = consts.Complete
 	election.DateUpdated.Time = time.Now().UTC()
 	election.DateEnded.Time = time.Now().UTC()
-	election.Results.OrderedCandidates = calculateResults(election)
+	election.Results = calculateResults(election)
 
 	//save changes to the db
 	o.saveElection(election)
@@ -44,8 +44,8 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	}
 }
 
-func calculateResults(election domain.Election) []Candidate {
-	ret := []Candidate{}
+func calculateResults(election domain.Election) ElectionResults {
+	ret := ElectionResults{}
 	candidates := []string{}
 	ballots := [][]string{}
 
@@ -65,13 +65,16 @@ func calculateResults(election domain.Election) []Candidate {
 	}
 
 	for len(candidates) > 0 {
+		//running a new election
 		fmt.Printf("Running election with %v candidates: %v\n", len(candidates), candidates)
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
 			break //if we get here, that means that there were some number of candidates that did not get a single vote
 		}
 		fmt.Printf("%v won!  Removing them and rerunning...\n", results.Winner)
-		ret = append(ret, getCandidate(election.Candidates, results.Winner))
+
+		//add the winner of this election to the ordered candidates list (this is the ranked list of winners)
+		ret.OrderedCandidates = append(ret.OrderedCandidates, getCandidate(election.Candidates, results.Winner))
 
 		//now that this candidate is in the ordered list, we can remove them from the candidate list and run through the ballots again
 		for i := range candidates {
@@ -80,6 +83,10 @@ func calculateResults(election domain.Election) []Candidate {
 				break
 			}
 		}
+
+		//full data for this election
+		ret.FullData = append(ret.FullData, results)
+
 	}
 
 	return ret

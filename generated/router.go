@@ -262,26 +262,10 @@ func Router() *mux.Router {
 	                                                }
 	                                            }
 	                                        },
-	                                        "elections": {
+	                                        "fullData": {
 	                                            "type": "array",
 	                                            "items": {
-	                                                "type": "object",
-	                                                "properties": {
-	                                                    "rounds": {
-	                                                        "type": "array",
-	                                                        "items": {
-	                                                            "type": "object",
-	                                                            "properties": {
-	                                                                "candidate": {
-	                                                                    "type": "string"
-	                                                                },
-	                                                                "votes": {
-	                                                                    "type": "integer"
-	                                                                }
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
+	                                                "type": "object"
 	                                            }
 	                                        }
 	                                    }
@@ -433,26 +417,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -593,26 +561,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -964,26 +916,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -1136,26 +1072,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -1296,26 +1216,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -1575,26 +1479,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -1834,26 +1722,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -2116,26 +1988,10 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
-	                                    "elections": {
+	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
-	                                            "type": "object",
-	                                            "properties": {
-	                                                "rounds": {
-	                                                    "type": "array",
-	                                                    "items": {
-	                                                        "type": "object",
-	                                                        "properties": {
-	                                                            "candidate": {
-	                                                                "type": "string"
-	                                                            },
-	                                                            "votes": {
-	                                                                "type": "integer"
-	                                                            }
-	                                                        }
-	                                                    }
-	                                                }
-	                                            }
+	                                            "type": "object"
 	                                        }
 	                                    }
 	                                }
@@ -2519,26 +2375,10 @@ func Router() *mux.Router {
 	                                                    }
 	                                                }
 	                                            },
-	                                            "elections": {
+	                                            "fullData": {
 	                                                "type": "array",
 	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "rounds": {
-	                                                            "type": "array",
-	                                                            "items": {
-	                                                                "type": "object",
-	                                                                "properties": {
-	                                                                    "candidate": {
-	                                                                        "type": "string"
-	                                                                    },
-	                                                                    "votes": {
-	                                                                        "type": "integer"
-	                                                                    }
-	                                                                }
-	                                                            }
-	                                                        }
-	                                                    }
+	                                                    "type": "object"
 	                                                }
 	                                            }
 	                                        }
@@ -2758,26 +2598,10 @@ func Router() *mux.Router {
 	                                                    }
 	                                                }
 	                                            },
-	                                            "elections": {
+	                                            "fullData": {
 	                                                "type": "array",
 	                                                "items": {
-	                                                    "type": "object",
-	                                                    "properties": {
-	                                                        "rounds": {
-	                                                            "type": "array",
-	                                                            "items": {
-	                                                                "type": "object",
-	                                                                "properties": {
-	                                                                    "candidate": {
-	                                                                        "type": "string"
-	                                                                    },
-	                                                                    "votes": {
-	                                                                        "type": "integer"
-	                                                                    }
-	                                                                }
-	                                                            }
-	                                                        }
-	                                                    }
+	                                                    "type": "object"
 	                                                }
 	                                            }
 	                                        }
