@@ -94,13 +94,25 @@ func sendEmail(election domain.Election, emailAddress string) {
 	m := gomail.NewMessage()
 	m.SetHeader("From", "electioneer.io@gmail.com")
 	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "Electioneer says it's time to vote!")
+	m.SetHeader("Subject", fmt.Sprintf("Time to cast your vote in %v!", election.Title))
 	m.SetBody("text/html", fmt.Sprintf(`
-    This sure is an email.
-    <br />
-    <br />
-    <a target=_blank href="https://electioneer.io/vote/%v">click here to vote</a>
-    `, token))
+	<h1>%v</h1>
+	<h2>%v</h2>
+    <p>
+	<a target=_blank href="https://electioneer.herokuapp.com/vote/%v">Click here to vote in this election.</a>
+	</p>  
+	<p>
+	This link acts as your voter registration,  so don't share it with anyone else!
+	</p>
+	<br />
+	<br />
+	<hr />
+
+	<p>
+	If you have 5 minutes to spare and would like to see a good explanation of how this voting system works <a target=_blank href="https://www.youtube.com/watch?v=3Y3jE3B8HsE">check out this video.</a>
+	</p>
+	
+    `, election.Title, election.Subtitle, token))
 
 	d := gomail.NewDialer("smtp.gmail.com", 587, "logrhythm.hackathon@gmail.com", "lawl1234")
 
