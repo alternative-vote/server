@@ -230,6 +230,71 @@ func (o *StopElectionRequestPathParams) validate() []string {
     return errors
 }
 
+type SendEmailRequest struct {
+    Context context.Context
+    PathParams SendEmailRequestPathParams
+    QueryParams SendEmailRequestQueryParams
+    Body interface{}
+}
+func (o *SendEmailRequest) validate() []string {
+    ret := []string{}
+    ret = append(ret, o.PathParams.validate()...)
+    ret = append(ret, o.QueryParams.validate()...)
+    return ret
+}
+
+type SendEmailRequestPathParams struct {
+    Id string `json:"id"`
+}
+func (o *SendEmailRequestPathParams) validate() []string {
+     errors := []string{}
+    idErrors := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid uuid
+    if FormatValidators["uuid"] != nil {
+      valid, formatError := FormatValidators["uuid"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Id, "path")
+    errors = append(errors, idErrors...)
+
+    return errors
+}
+type SendEmailRequestQueryParams struct {
+    Force string `json:"force"`
+}
+func (o *SendEmailRequestQueryParams) validate() []string {
+    errors := []string{}
+    forceErrors := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.Force, "queryString")
+    errors = append(errors, forceErrors...)
+
+    return errors
+}
+
 type LoginRequest struct {
     Context context.Context
     Body LoginRequestBody

@@ -1,7 +1,19 @@
 package generated
 
+type ElectionResultsElectionsRounds struct {
+    Candidate string `json:"candidate"`
+    Votes int64 `json:"votes"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
+type ElectionResultsElections struct {
+    Rounds []ElectionResultsElectionsRounds `json:"rounds"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
 type ElectionResults struct {
     OrderedCandidates []Candidate `json:"orderedCandidates"`
+    Elections []ElectionResultsElections `json:"elections"`
     MetaData SerializationMetadata `json:"-"`
 }
 
