@@ -46,6 +46,12 @@ type StopElectionResponse struct {
     Body Election
     }
 
+type SendEmailResponse struct {
+    StatusCode int
+    Headers map[string]string
+    Body Election
+    }
+
 type LoginResponse struct {
     StatusCode int
     Headers map[string]string

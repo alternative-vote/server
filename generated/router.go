@@ -749,6 +749,9 @@ func Router() *mux.Router {
 	        },
 	        "/elections/{id}/actions/stop": {
 	            "PUT": "stopElection"
+	        },
+	        "/elections/{id}/actions/sendEmail": {
+	            "PUT": "sendEmail"
 	        }
 	    },
 	    "methods": {
@@ -1690,6 +1693,266 @@ func Router() *mux.Router {
     
     //405 handler for /elections/{id}/actions/stop/
     router.HandleFunc("/elections/{id}/actions/stop/", func(res http.ResponseWriter, req *http.Request) {
+	    panic(HttpError(405))
+	})
+
+    //put /elections/{id}/actions/sendEmail/
+    router.HandleFunc("/elections/{id}/actions/sendEmail/", func(res http.ResponseWriter, req *http.Request) {
+       request := new(SendEmailRequest)
+        request.Context = req.Context()
+        errors := []string{}
+    
+        //'id' in form data
+        request.PathParams.Id = func(s string) string {
+            var ret string
+            if s == "" {
+                errors = append(errors, "id is a required path parameter")
+                return ret
+            }
+            var err error
+            ret, err = func(s string) (string, error) {
+            return s, nil
+        }(s)
+            if err != nil {
+                errors = append(errors, fmt.Sprintf("id: '%v' is not a valid string", s))
+            }
+        
+            return ret
+        }(mux.Vars(req)["id"])
+        
+        //'force' in form data
+        request.QueryParams.Force = func(s string) string {
+            var ret string
+            if s == "" {
+                return ret
+            }
+            var err error
+            ret, err = func(s string) (string, error) {
+            return s, nil
+        }(s)
+            if err != nil {
+                errors = append(errors, fmt.Sprintf("force: '%v' is not a valid string", s))
+            }
+        
+            return ret
+        }(req.URL.Query().Get("force"))
+        
+        bodyBytes, readErr := ioutil.ReadAll(req.Body)
+        if readErr != nil {
+            panic("error reading body from the request: " + readErr.Error())
+        }
+        
+        //ok, now let's decode it into the actual request object
+        bodyError := json.Unmarshal(bodyBytes, &request.Body)
+        if bodyError != nil {
+        	errors = append(errors, "invalid JSON or wrong types: "+bodyError.Error())
+        }
+        
+        //don't bother to validate if we had deserialization errors
+        if len(errors) == 0 {
+            errors = append(errors, request.validate()...)
+        }
+        
+    
+        if len(errors) > 0 {
+            apiError := HttpError(400)
+            apiError.ValidationErrors = errors
+            panic(apiError)
+    	}
+        if RouterElectionController == nil {
+            panic(HttpError(501))
+        }
+        response := RouterElectionController.SendEmail(request)
+    
+        //transfer headers to the actual http response
+        if response != nil {
+            for k, v := range response.Headers {
+                res.Header().Set(k, v)
+            }
+        }
+        
+        //transfer status code to the actual http response
+        //order matters - make sure to do this after setting other header values!
+        res.WriteHeader(response.StatusCode)
+        
+        responseBytes, _ := json.Marshal(response.Body)
+        res.Write(responseBytes)
+    }).Methods("put")    
+    //options /elections/{id}/actions/sendEmail/
+	router.HandleFunc("/elections/{id}/actions/sendEmail/", func(res http.ResponseWriter, req *http.Request) {
+	    res.Write([]byte(`{
+	    "childRoutes": {},
+	    "methods": {
+	        "put": {
+	            "operationId": "sendEmail",
+	            "parameters": [
+	                {
+	                    "in": "path",
+	                    "name": "id",
+	                    "required": true,
+	                    "type": "string",
+	                    "format": "uuid"
+	                },
+	                {
+	                    "name": "force",
+	                    "in": "query",
+	                    "required": false,
+	                    "type": "string"
+	                },
+	                {
+	                    "name": "body",
+	                    "in": "body",
+	                    "required": true,
+	                    "schema": {
+	                        "type": "object"
+	                    }
+	                }
+	            ],
+	            "responses": {
+	                "200": {
+	                    "description": "something",
+	                    "schema": {
+	                        "type": "object",
+	                        "properties": {
+	                            "id": {
+	                                "type": "string",
+	                                "format": "uuid"
+	                            },
+	                            "dateCreated": {
+	                                "type": "string",
+	                                "format": "date-time"
+	                            },
+	                            "dateUpdated": {
+	                                "type": "string",
+	                                "format": "date-time"
+	                            },
+	                            "title": {
+	                                "type": "string"
+	                            },
+	                            "subtitle": {
+	                                "type": "string"
+	                            },
+	                            "description": {
+	                                "type": "string"
+	                            },
+	                            "startDate": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "manual": {
+	                                        "type": "boolean",
+	                                        "default": true
+	                                    },
+	                                    "date": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    }
+	                                }
+	                            },
+	                            "endDate": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "manual": {
+	                                        "type": "boolean",
+	                                        "default": true
+	                                    },
+	                                    "date": {
+	                                        "type": "string",
+	                                        "format": "date-time"
+	                                    }
+	                                }
+	                            },
+	                            "dateStarted": {
+	                                "type": "string",
+	                                "format": "date-time"
+	                            },
+	                            "dateEnded": {
+	                                "type": "string",
+	                                "format": "date-time"
+	                            },
+	                            "state": {
+	                                "type": "string"
+	                            },
+	                            "owner": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
+	                                    "email": {
+	                                        "type": "string",
+	                                        "format": "email"
+	                                    },
+	                                    "isAccount": {
+	                                        "type": "boolean"
+	                                    }
+	                                }
+	                            },
+	                            "voters": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "object",
+	                                    "properties": {
+	                                        "email": {
+	                                            "type": "string",
+	                                            "format": "email"
+	                                        },
+	                                        "emailSent": {
+	                                            "type": "boolean"
+	                                        }
+	                                    }
+	                                }
+	                            },
+	                            "candidates": {
+	                                "type": "array",
+	                                "items": {
+	                                    "type": "object",
+	                                    "properties": {
+	                                        "title": {
+	                                            "type": "string"
+	                                        },
+	                                        "subtitle": {
+	                                            "type": "string"
+	                                        },
+	                                        "description": {
+	                                            "type": "string"
+	                                        }
+	                                    }
+	                                }
+	                            },
+	                            "results": {
+	                                "type": "object",
+	                                "properties": {
+	                                    "orderedCandidates": {
+	                                        "type": "array",
+	                                        "items": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "title": {
+	                                                    "type": "string"
+	                                                },
+	                                                "subtitle": {
+	                                                    "type": "string"
+	                                                },
+	                                                "description": {
+	                                                    "type": "string"
+	                                                }
+	                                            }
+	                                        }
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}`))
+	}).Methods("options")
+    
+    //405 handler for /elections/{id}/actions/sendEmail/
+    router.HandleFunc("/elections/{id}/actions/sendEmail/", func(res http.ResponseWriter, req *http.Request) {
 	    panic(HttpError(405))
 	})
 

@@ -4,12 +4,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"fmt"
-
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
-	"github.com/go-gomail/gomail"
 )
 
 func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResponse {
@@ -55,29 +52,4 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 		StatusCode: 200,
 		Body:       election.Election,
 	}
-}
-
-func sendEmail(election domain.Election, emailAddress string) {
-
-	token := GetVoterToken(election.Id, emailAddress)
-
-	m := gomail.NewMessage()
-	m.SetHeader("From", "electioneer.io@gmail.com")
-	m.SetHeader("To", emailAddress)
-	m.SetHeader("Subject", "Electioneer says it's time to vote!")
-	m.SetBody("text/html", fmt.Sprintf(`
-    This sure is an email.
-    <br />
-    <br />
-    <a target=_blank href="https://electioneer.io/vote/%v">click here to vote</a>
-    `, token))
-
-	d := gomail.NewDialer("smtp.gmail.com", 587, "electioneer.io@gmail.com", "lawl1234")
-
-	if err := d.DialAndSend(m); err != nil {
-		panic(err)
-	}
-
-	fmt.Println("email sent to ", emailAddress)
-	fmt.Println("token = ", token)
 }

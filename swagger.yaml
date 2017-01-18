@@ -110,6 +110,26 @@ paths:
           description: something
           schema:
             $ref: "#/definitions/Election"
+  "/elections/{id}/actions/sendEmail":
+    x-swagger-router-controller: election
+    put:
+      operationId: sendEmail
+      parameters:
+      - $ref: "#/parameters/id"
+      - name: force
+        in: query
+        required: false
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+      responses:
+        '200':
+          description: something
+          schema:
+            $ref: "#/definitions/Election"
   "/login":
     x-swagger-router-controller: authentication
     post:

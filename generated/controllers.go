@@ -19,6 +19,8 @@ type IElectionController interface{
     
     StopElection(*StopElectionRequest) *StopElectionResponse
     
+    SendEmail(*SendEmailRequest) *SendEmailResponse
+    
     GetBallot(*GetBallotRequest) *GetBallotResponse
     
     UpdateBallot(*UpdateBallotRequest) *UpdateBallotResponse
