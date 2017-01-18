@@ -70,7 +70,7 @@ func main() {
 		http.ServeContent(res, req, req.URL.Path, time.Now(), bytes.NewReader(data))
 	})
 
-	fmt.Println("listening at localhost:" + port)
+	fmt.Println("listening at localhost:" + port + "...")
 	http.ListenAndServe(":"+port, nil)
 
 }

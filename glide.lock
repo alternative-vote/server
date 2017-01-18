@@ -1,5 +1,5 @@
 hash: 2577e54b8d10cfe61cf8f02da5e78d558f96731405effb671a413b5932792884
-updated: 2017-01-12T17:04:11.197159304-07:00
+updated: 2017-01-17T17:01:13.66980038-07:00
 imports:
 - name: github.com/dgrijalva/jwt-go
   version: a601269ab70c205d26370c16f7c81e9017c14e04
@@ -12,7 +12,7 @@ imports:
 - name: github.com/jtolds/gls
   version: bb0351aa7eb6f322f32667d51375f26a2bca6628
 - name: github.com/Khelldar/altVote
-  version: 740e9198dc68c2c190fbc5849989e5b95ba81b16
+  version: dc7026b9f81d6e010deef1a5c4123bd029282f7e
 - name: github.com/satori/go.uuid
   version: b061729afc07e77a8aa4fad0a2fd840958f1942a
 - name: github.com/smartystreets/assertions

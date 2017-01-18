@@ -28,24 +28,9 @@ func (o *ElectionResults) validate(parentName string) []string {
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "orderedCandidates") {
-		//orderedCandidates is an array of primatives
+		//orderedCandidates is an array of structs
 		for _, v := range o.OrderedCandidates {
-			orderedCandidatesErr := func(propValue string, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-
-
-
-
-
-    return ret
-}(v, parentName)
-			if orderedCandidatesErr != nil {
-				errors = append(errors, orderedCandidatesErr...)
-			}
+			errors = append(errors, v.validate(parentName + ".orderedCandidates")...)
 		}
 	}
 
@@ -375,24 +360,9 @@ func (o *Election) validate(parentName string) []string {
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "voters") {
-		//voters is an array of primatives
+		//voters is an array of structs
 		for _, v := range o.Voters {
-			votersErr := func(propValue string, parentName string) []string {
-    ret := []string{}
-    v := propValue
-    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
-    
-
-
-
-
-
-
-    return ret
-}(v, parentName)
-			if votersErr != nil {
-				errors = append(errors, votersErr...)
-			}
+			errors = append(errors, v.validate(parentName + ".voters")...)
 		}
 	}
 
@@ -420,6 +390,90 @@ func (o *Election) validate(parentName string) []string {
 
 	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
 	errors = append(errors, o.Results.validate(parentName + ".results")...)
+
+
+
+    return errors
+}
+
+func (o *Voter) extraFields(parentName string) []string {
+	ret := []string{}
+
+    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
+		if !hasElem([]string{"email", "emailSent"}, fieldFromJSON) {
+			ret = append(ret, parentName+"."+fieldFromJSON)
+		}
+	}
+
+    return ret
+}
+
+func (o *Voter) validate(parentName string) []string {
+	errors := []string{}
+
+    //check for extra fields first
+    extraFields := o.extraFields(parentName)
+	if len(extraFields) > 0 {
+		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
+	}
+
+
+	//go through each property
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "email") {
+		//email is a primative
+		emailErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid email
+    if FormatValidators["email"] != nil {
+      valid, formatError := FormatValidators["email"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.email: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Email, parentName)
+		if emailErr != nil {
+			errors = append(errors, emailErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "emailSent") {
+		//emailSent is a primative
+		emailSentErr := func(propValue bool, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.EmailSent, parentName)
+		if emailSentErr != nil {
+			errors = append(errors, emailSentErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
 
 
 

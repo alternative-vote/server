@@ -110,31 +110,6 @@ paths:
           description: something
           schema:
             $ref: "#/definitions/Election"
-#   "/elections/{id}/ballot":
-#     x-swagger-router-controller: election
-#     get:
-#       operationId: getBallot
-#       parameters:
-#       - $ref: "#/parameters/id"
-#       responses:
-#         '200':
-#           description: something
-#           schema:
-#             $ref: "#/definitions/Ballot"
-#     post:
-#       operationId: upsertBallot
-#       parameters:
-#       - $ref: "#/parameters/id"
-#       - name: body
-#         in: body
-#         required: true
-#         schema:
-#           $ref: "#/definitions/Ballot"
-#       responses:
-#         '200':
-#           description: something
-#           schema:
-#             $ref: "#/definitions/Ballot"
   "/login":
     x-swagger-router-controller: authentication
     post:
@@ -195,20 +170,6 @@ paths:
                 $ref: "#/definitions/Election"
               ballot:
                 $ref: "#/definitions/Ballot"
-
-  # "/":
-  #   x-swagger-router-controller: client
-  #   get:
-  #     operationId: index
-  #     x-raw-handler: true
-  #     parameters: 
-  #     - name: restOfRoute
-  #       type: string
-  #     responses:
-  #       '200':
-  #         description: something
-  #         schema:
-  #           type: object
             
 
 parameters:
@@ -262,33 +223,27 @@ definitions:
       voters:
         type: array
         items:
-          type: string
-          format: email
+          $ref: "#/definitions/Voter"
       candidates:
         type: array
         items:
           $ref: "#/definitions/Candidate"
-      # ballots:
-      #   type: array
-      #   items:
-      #     $ref: "#/definitions/Ballot"
       results:
         type: object
         properties:
           orderedCandidates:
             type: array
             items:
-              type: string
+              $ref: "#/definitions/Candidate"
 
-#   Role:
-#     type: object
-#     properties:
-#       isPublic:
-#         type: boolean
-#       members:
-#         type: array
-#         items:
-#           $ref: "#/definitions/User"
+  Voter:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+      emailSent:
+        type: boolean
 
 
   Timer:

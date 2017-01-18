@@ -1,7 +1,7 @@
 package generated
 
 type ElectionResults struct {
-    OrderedCandidates []string `json:"orderedCandidates"`
+    OrderedCandidates []Candidate `json:"orderedCandidates"`
     MetaData SerializationMetadata `json:"-"`
 }
 
@@ -18,9 +18,15 @@ type Election struct {
     DateEnded APITime `json:"dateEnded"`
     State string `json:"state"`
     Owner User `json:"owner"`
-    Voters []string `json:"voters"`
+    Voters []Voter `json:"voters"`
     Candidates []Candidate `json:"candidates"`
     Results ElectionResults `json:"results"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
+type Voter struct {
+    Email string `json:"email"`
+    EmailSent bool `json:"emailSent"`
     MetaData SerializationMetadata `json:"-"`
 }
 

@@ -40,6 +40,25 @@ func (o *Election) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type voter Voter
+
+func (o *Voter) UnmarshalJSON(data []byte) error {
+	//deserialize normally (using our private dummy struct to prevent looping)
+	privateObject := new(voter)
+	err := json.Unmarshal(data, privateObject)
+	if err != nil {
+		return err
+	}
+	*o = Voter(*privateObject)
+
+	//ok, if that worked lets fill in some metadata
+	for _, propertyName := range getFields(data) {
+		o.MetaData.AddDeserializedProperty(propertyName)
+	}
+
+	return nil
+}
+
 type timer Timer
 
 func (o *Timer) UnmarshalJSON(data []byte) error {
