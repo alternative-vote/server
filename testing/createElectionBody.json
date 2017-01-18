@@ -1,0 +1,126 @@
+{
+
+  "title": "Last Hackathon",
+  "subtitle": "What did those crazy engineers come up with that time?!?",
+  "description": "",
+  "voters": [
+    {
+      "email": "chris.langager@logrhythm.com"
+    },
+    {
+      "email": "christopher.langager@gmail.com"
+    },
+    {
+      "email": "saizul@gmail.com"
+    },
+    {
+      "email": "erin.noe-payne@logrhythm.com"
+    }
+  ],
+  "candidates": [
+    {
+      "title": "Contextual Action Menu for WebU",
+      "subtitle": "Nicholas Boll"
+    },
+    {
+      "title": "LogRhythm Deployment Tool",
+      "subtitle": "Erin Noe-Payne, Caitlin Noe-Payne, Chris Langager"
+    },
+    {
+      "title": "NetMon Live USB",
+      "subtitle": "John Gress, Shweta Bhandare"
+    },
+    {
+      "title": "Smart Response Plugin for O365",
+      "subtitle": "Bruce Deakyne, Matt Willems, Steve Warburton, Greg Foss"
+    },
+    {
+      "title": "QA Doc Parsing Script Refactor and Improvements for Transition to Test Rail",
+      "subtitle": "Daniel Shatz-Miller, Lauren Walter, Jarod Smilkstein"
+    },
+    {
+      "title": "Machine Learning as a Service Using AWS Components",
+      "subtitle": "Dean Wyatte, Brian Johnson"
+    },
+    {
+      "title": "Engine Thread Load Balancing for NetMon",
+      "subtitle": "Kjell Hedstrom"
+    },
+    {
+      "title": "Adding .llx File Replay and Performance Improvements to the Agent Simulator",
+      "subtitle": "Anna Podoplelova, Taylor Andrews"
+    },
+    {
+      "title": "Custom Tagging of NetMon Flows",
+      "subtitle": "Alex Weltman, Craig Cogdill"
+    },
+    {
+      "title": "Automatic LogRhythm Setup and Dynamic Expression",
+      "subtitle": "Shailesh Pandey, Nick Carpenter, Nishant Shukla, Sagar Muppaneni"
+    },
+    {
+      "title": "Web Services on Linux ",
+      "subtitle": "Michael Vellequette"
+    },
+    {
+      "title": "Third Party Lookup Tool ",
+      "subtitle": "Caitlin Noe-Payne"
+    },
+    {
+      "title": "Unstructured Log Search",
+      "subtitle": "Dan Kaslovsky, Joel Holsteen, Miles Rufat-Latre"
+    },
+    {
+      "title": "Community Golden Nugget Integration",
+      "subtitle": "Leah Knowles, Carol Schendorf, Matt Lindsey"
+    },
+    {
+      "title": "Better Voting Tool, Neo Framework/No React",
+      "subtitle": "Justin Miller"
+    },
+    {
+      "title": "LogRhythm.Protobuffers Objects in the MPE",
+      "subtitle": "Phil Barila, David Ellis"
+    },
+    {
+      "title": "Compression for BoltDB",
+      "subtitle": "Robert Weber, Ben Aldrich"
+    },
+    {
+      "title": "Performance Monitoring / Vector.io",
+      "subtitle": "Lucas Caballero"
+    },
+    {
+      "title": "Tool for Troubleshooting Configuration and Log Collection Issues",
+      "subtitle": "Mohammad Ikram, Pranay Kumar, Pankaj Mahur"
+    },
+    {
+      "title": "Viewing Health Check Data with Sticky Forced Layouts",
+      "subtitle": "Zach Baxter"
+    },
+    {
+      "title": "ConfigControl",
+      "subtitle": "Paul Oldenburg"
+    },
+    {
+      "title": "Parser Generator",
+      "subtitle": "Ana Chang, Matt Petersen"
+    },
+    {
+      "title": "Webcam/Ipcam Widget",
+      "subtitle": "Sam Volin, Justin Menestrina, Alex Tzinov"
+    },
+    {
+      "title": " Database Data Change Tracking Tool",
+      "subtitle": "John Ryden"
+    },
+    {
+      "title": "Kibana Installation and use with Denormalized Data",
+      "subtitle": "Steve Kaufman, Jacob Delgado"
+    },
+    {
+      "title": "Aggregation of Build Information Across Jenkins and TFS aka \"Rosie\"",
+      "subtitle": "Brian Staton"
+    }
+  ]
+}
