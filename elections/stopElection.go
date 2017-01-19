@@ -5,7 +5,8 @@ import (
 
 	"github.com/Khelldar/altVote"
 	"github.com/alternative-vote/server/consts"
-	"github.com/davecgh/go-spew/spew"
+
+	"math"
 
 	. "github.com/alternative-vote/server/generated"
 )
@@ -36,7 +37,22 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	election.DateEnded.Time = time.Now().UTC()
 	election.Results = calculateResults(election, ballots)
 
+	//Can't save NaN to elasticsearch
+	if math.IsNaN(election.Results.Stats.AverageCandidatesRanked) {
+		election.Results.Stats.AverageCandidatesRanked = 0
+	}
+
 	//save changes to the db
+	o.saveElection(election)
+
+	for i, voter := range election.Voters {
+		if !election.Voters[i].ResultsEmailSent {
+			go sendResultsEmail(election, voter.Email)
+			election.Voters[i].ResultsEmailSent = true
+		}
+	}
+
+	//save changes to the db again post emails sent
 	o.saveElection(election)
 
 	return &StopElectionResponse{
@@ -101,7 +117,7 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 
 	}
 
-	spew.Dump(ret.FullData)
+	// spew.Dump(ret.FullData)
 	ret.FullData = nil
 
 	return ret

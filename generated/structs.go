@@ -37,7 +37,8 @@ type Election struct {
 
 type Voter struct {
     Email string `json:"email"`
-    EmailSent bool `json:"emailSent"`
+    VoteEmailSent bool `json:"voteEmailSent"`
+    ResultsEmailSent bool `json:"resultsEmailSent"`
     MetaData SerializationMetadata `json:"-"`
 }
 

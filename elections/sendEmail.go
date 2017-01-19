@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/alternative-vote/server/consts"
-	
+
 	. "github.com/alternative-vote/server/generated"
 )
 
@@ -36,9 +36,9 @@ func (o *Controller) SendEmail(req *SendEmailRequest) *SendEmailResponse {
 
 	//if that worked, let's send out emails to the voters
 	for i, voter := range election.Voters {
-		if strings.ToLower(req.QueryParams.Force) == "true" || !voter.EmailSent {
+		if strings.ToLower(req.QueryParams.Force) == "true" || !voter.VoteEmailSent {
 			go sendEmail(election, voter.Email)
-			election.Voters[i].EmailSent = true
+			election.Voters[i].VoteEmailSent = true
 		}
 	}
 

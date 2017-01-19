@@ -30,6 +30,7 @@ func (o *Controller) CreateElection(req *CreateElectionRequest) *CreateElectionR
 	//owner comes from auth claims
 	election.Owner.Email = claims.Email
 	election.Owner.IsAccount = true
+	election.Results.Stats.AverageCandidatesRanked = 0
 
 	//create the election
 	_, err := o.Client.Index().
