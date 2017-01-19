@@ -1,6 +1,10 @@
-hash: 2577e54b8d10cfe61cf8f02da5e78d558f96731405effb671a413b5932792884
-updated: 2017-01-17T17:01:13.66980038-07:00
+hash: d3be635f252fa287ed210925e86c36542d3564c37514c2e3ad6e9eda5fb0b22c
+updated: 2017-01-19T13:34:58.459670803-07:00
 imports:
+- name: github.com/davecgh/go-spew
+  version: 346938d642f2ec3594ed81d874461961cd0faa76
+  subpackages:
+  - /spew
 - name: github.com/dgrijalva/jwt-go
   version: a601269ab70c205d26370c16f7c81e9017c14e04
 - name: github.com/go-gomail/gomail
