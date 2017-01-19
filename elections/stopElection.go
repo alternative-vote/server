@@ -9,7 +9,6 @@ import (
 	"github.com/alternative-vote/server/consts"
 
 	. "github.com/alternative-vote/server/generated"
-	"github.com/davecgh/go-spew/spew"
 )
 
 func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionResponse {
@@ -102,7 +101,6 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		ret.FullData = append(ret.FullData, results)
 
 	}
-	spew.Dump(ret.Stats)
 	return ret
 }
 

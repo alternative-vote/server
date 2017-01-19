@@ -217,22 +217,78 @@ func sendEmail(election Election, emailAddress string) {
 	m.SetHeader("To", emailAddress)
 	m.SetHeader("Subject", fmt.Sprintf("Time to cast your vote in %v!", election.Title))
 	m.SetBody("text/html", fmt.Sprintf(`
-	<h1>%v</h1>
-	<h2>%v</h2>
-    <p>
-	<a target=_blank href="https://electioneer.herokuapp.com/vote/%v">Click here to vote in this election.</a>
-	</p>  
-	<p>
-	This link acts as your voter registration,  so don't share it with anyone else!
-	</p>
-	<br />
-	<br />
-	<hr />
+	<style type="text/css">
+.body {
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+.card {
+    margin: auto 0;
+    max-width: 600px;
+    padding: 20px;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    text-align: center;
+}
 
-	<p>
-	If you have 5 minutes to spare and would like to see a good explanation of how this voting system works <a target=_blank href="https://www.youtube.com/watch?v=3Y3jE3B8HsE">check out this video.</a>
-	</p>
-	
+button {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+    box-shadow: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    font-size: 1rem;
+    height: 2.285em;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    line-height: 1.5;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    position: relative;
+    vertical-align: top;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    color: #363636;
+    cursor: pointer;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    text-align: center;
+    white-space: nowrap;
+}
+
+a {
+    text-decoration: none;
+}
+</style>
+
+
+<div class="body">
+<p>You have been invited to vote in an election!</p>
+<div class="card">
+    <h1>%v</h1>
+    <h2>%v</h2>
+    <p>
+    <a target=_blank href="https://electioneer.herokuapp.com/vote/%v"><button>Go Vote!</button></a>
+    </p>
+</div>
+<p>
+This link acts as your voter registration,  so don't share it with anyone else!
+</p>
+</div>
     `, election.Title, election.Subtitle, token))
 
 	d := gomail.NewDialer("smtp.gmail.com", 587, "logrhythm.hackathon@gmail.com", "lawl1234")
