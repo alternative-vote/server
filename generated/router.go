@@ -219,7 +219,10 @@ func Router() *mux.Router {
 	                                                "type": "string",
 	                                                "format": "email"
 	                                            },
-	                                            "emailSent": {
+	                                            "voteEmailSent": {
+	                                                "type": "boolean"
+	                                            },
+	                                            "resultsEmailSent": {
 	                                                "type": "boolean"
 	                                            }
 	                                        }
@@ -396,7 +399,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -562,7 +568,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -939,7 +948,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -1117,7 +1129,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -1283,7 +1298,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -1568,7 +1586,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -1833,7 +1854,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -2121,7 +2145,10 @@ func Router() *mux.Router {
 	                                            "type": "string",
 	                                            "format": "email"
 	                                        },
-	                                        "emailSent": {
+	                                        "voteEmailSent": {
+	                                            "type": "boolean"
+	                                        },
+	                                        "resultsEmailSent": {
 	                                            "type": "boolean"
 	                                        }
 	                                    }
@@ -2530,7 +2557,10 @@ func Router() *mux.Router {
 	                                                    "type": "string",
 	                                                    "format": "email"
 	                                                },
-	                                                "emailSent": {
+	                                                "voteEmailSent": {
+	                                                    "type": "boolean"
+	                                                },
+	                                                "resultsEmailSent": {
 	                                                    "type": "boolean"
 	                                                }
 	                                            }
@@ -2789,7 +2819,10 @@ func Router() *mux.Router {
 	                                                    "type": "string",
 	                                                    "format": "email"
 	                                                },
-	                                                "emailSent": {
+	                                                "voteEmailSent": {
+	                                                    "type": "boolean"
+	                                                },
+	                                                "resultsEmailSent": {
 	                                                    "type": "boolean"
 	                                                }
 	                                            }

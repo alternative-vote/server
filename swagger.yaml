@@ -292,8 +292,11 @@ definitions:
       email:
         type: string
         format: email
-      emailSent:
+      voteEmailSent:
         type: boolean
+      resultsEmailSent:
+        type: boolean
+      
 
 
   Timer:

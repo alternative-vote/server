@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/alternative-vote/server/consts"
-	
+
 	. "github.com/alternative-vote/server/generated"
 )
 
@@ -42,7 +42,7 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 	//if that worked, let's send out emails to the voters
 	for i, voter := range election.Voters {
 		go sendEmail(election, voter.Email)
-		election.Voters[i].EmailSent = true
+		election.Voters[i].VoteEmailSent = true
 	}
 
 	//save changes to the db
