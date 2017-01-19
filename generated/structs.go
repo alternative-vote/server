@@ -1,19 +1,18 @@
 package generated
 
-type ElectionResultsElectionsRounds struct {
-    Candidate string `json:"candidate"`
-    Votes int64 `json:"votes"`
-    MetaData SerializationMetadata `json:"-"`
-}
-
-type ElectionResultsElections struct {
-    Rounds []ElectionResultsElectionsRounds `json:"rounds"`
+type ElectionResultsStats struct {
+    Start APITime `json:"start"`
+    End APITime `json:"end"`
+    NumVoters int64 `json:"numVoters"`
+    BallotsSubmitted int64 `json:"ballotsSubmitted"`
+    AverageCandidatesRanked float64 `json:"averageCandidatesRanked"`
     MetaData SerializationMetadata `json:"-"`
 }
 
 type ElectionResults struct {
     OrderedCandidates []Candidate `json:"orderedCandidates"`
-    Elections []ElectionResultsElections `json:"elections"`
+    Stats ElectionResultsStats `json:"stats"`
+    FullData []interface{} `json:"fullData"`
     MetaData SerializationMetadata `json:"-"`
 }
 
@@ -49,6 +48,8 @@ type Timer struct {
 }
 
 type Ballot struct {
+    Id string `json:"id"`
+    ElectionId string `json:"electionId"`
     Voter string `json:"voter"`
     Votes []Candidate `json:"votes"`
     IsSubmitted bool `json:"isSubmitted"`

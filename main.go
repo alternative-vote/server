@@ -29,7 +29,12 @@ func main() {
 		port = "8000"
 	}
 
-	esClient := initDB()
+	esClient, err := initDB()
+	for err != nil {
+		fmt.Println("there was an error connecting to the DB, trying again in 2 seconds...")
+		time.Sleep(time.Second * 2)
+		esClient, err = initDB()
+	}
 
 	//link up controllers and start the server
 	generated.RouterElectionController = &elections.Controller{Client: esClient}
@@ -75,11 +80,11 @@ func main() {
 
 }
 
-func initDB() *elastic.Client {
+func initDB() (*elastic.Client, error) {
 	// Create a esClient and connect to http://192.168.2.10:9201
 	esClient, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(consts.DB_LOC))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	// esClient.DeleteIndex(consts.INDEX).Do()
@@ -87,16 +92,16 @@ func initDB() *elastic.Client {
 	//check to see if our one index exists
 	exists, err := esClient.IndexExists(consts.INDEX).Do()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if !exists {
 		_, err = esClient.CreateIndex(consts.INDEX).Do()
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 	}
-	return esClient
+	return esClient, nil
 }
 
 func adminAuthMiddleare(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {

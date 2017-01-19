@@ -3,13 +3,17 @@ package elections
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 
 	"gopkg.in/olivere/elastic.v3"
 
+	"strings"
+	"time"
+
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
-	. "github.com/alternative-vote/server/generated"
 	"github.com/dgrijalva/jwt-go"
+
+	. "github.com/alternative-vote/server/generated"
 	"github.com/go-gomail/gomail"
 )
 
@@ -32,32 +36,149 @@ func checkError(err error) {
 //don't have an "elections service" yet, so just using the controller as a dumping ground service style functions
 
 //get an election from the DB by ID
-func (o *Controller) getElectionById(id string) domain.Election {
+func (o *Controller) getElectionById(id string) Election {
+	fmt.Println("getElectionById called")
 	results, err := o.Client.Get().
 		Index(consts.INDEX).
 		Type("election").
 		Id(id).
 		Do()
-	checkError(err)
 
-	var election domain.Election
-	err = json.Unmarshal(*results.Source, &election)
+	if elastic.IsNotFound(err) {
+		panic(HttpError(404))
+	}
+
+	//deal with db rate limiting
+	if err != nil && strings.Contains(err.Error(), "429") {
+		fmt.Println("Slowing down....")
+		time.Sleep(time.Millisecond * 50)
+		return o.getElectionById(id)
+	}
+
+	//something bad happened
 	if err != nil {
+		fmt.Println("error in getElectionById:")
 		panic(err)
 	}
+
+	var election Election
+	err = json.Unmarshal(*results.Source, &election)
 
 	return election
 }
 
 //Save an election to the DB
-func (o *Controller) saveElection(election domain.Election) {
+func (o *Controller) saveElection(election Election) {
+	fmt.Println("saveElection called")
 	_, err := o.Client.Index().
 		Index(consts.INDEX).
 		Type("election").
 		Id(election.Id).
 		BodyJson(election).
 		Do()
+
+	//deal with db rate limiting
+	if err != nil && strings.Contains(err.Error(), "429") {
+		fmt.Println("Slowing down....")
+		time.Sleep(time.Millisecond * 50)
+		o.saveElection(election)
+		return
+	}
+
+	//something bad happened
+	if err != nil {
+		fmt.Println("error in saveElection:")
+		panic(err)
+	}
+}
+
+func (o *Controller) getBallot(id string) *Ballot {
+	results, err := o.Client.Get().
+		Index(consts.INDEX).
+		Type("ballot").
+		Id(id).
+		Do()
+
+	if elastic.IsNotFound(err) {
+		return nil
+	}
+
+	//deal with db rate limiting
+	if err != nil && strings.Contains(err.Error(), "429") {
+		fmt.Println("Slowing down....")
+		time.Sleep(time.Millisecond * 50)
+		return o.getBallot(id)
+	}
+
+	//something bad happened
+	if err != nil {
+		fmt.Println("error in getElectionById:")
+		panic(err)
+	}
+
+	var ballot Ballot
+	err = json.Unmarshal(*results.Source, &ballot)
+
+	return &ballot
+}
+
+func (o *Controller) saveBallot(ballot Ballot) {
+	_, err := o.Client.Index().
+		Index(consts.INDEX).
+		Type("ballot").
+		Id(ballot.Id).
+		BodyJson(ballot).
+		Do()
+
+	//deal with db rate limiting
+	if err != nil && strings.Contains(err.Error(), "429") {
+		fmt.Println("Slowing down....")
+		time.Sleep(time.Millisecond * 50)
+		o.saveBallot(ballot)
+		return
+	}
+
+	//something bad happened
+	if err != nil {
+		fmt.Println("error in saveBallot:")
+		panic(err)
+	}
+}
+
+func (o *Controller) getBallots(electionId string) []Ballot {
+	ballots := make([]Ballot, 0)
+
+	query := elastic.NewSimpleQueryStringQuery(electionId)
+	searchResults, err := o.Client.
+		Search(consts.INDEX).
+		Query(query).
+		Type("ballot").
+		From(0).
+		Size(10000).
+		Do()
 	checkError(err)
+
+	//deal with db rate limiting
+	if err != nil && strings.Contains(err.Error(), "429") {
+		fmt.Println("Slowing down....")
+		time.Sleep(time.Millisecond * 50)
+		return o.getBallots(electionId)
+	}
+
+	//something bad happened
+	if err != nil {
+		fmt.Println("error in saveBallot:")
+		panic(err)
+	}
+
+	var b Ballot
+	for _, item := range searchResults.Each(reflect.TypeOf(b)) {
+		if ballot, ok := item.(Ballot); ok && ballot.ElectionId == electionId {
+			ballots = append(ballots, ballot)
+		}
+	}
+
+	return ballots
 }
 
 //decode voter claims information from a jwt token
@@ -87,7 +208,7 @@ func getClaims(tokenString string) VoterClaims {
 	return *claims
 }
 
-func sendEmail(election domain.Election, emailAddress string) {
+func sendEmail(election Election, emailAddress string) {
 
 	token := GetVoterToken(election.Id, emailAddress)
 

@@ -255,20 +255,35 @@ definitions:
             type: array
             items:
               $ref: "#/definitions/Candidate"
-          elections:
+          stats:
+            type: object
+            properties:
+              start: 
+                type: string
+                format: date-time
+              end:
+                type: string
+                format: date-time
+              numVoters: 
+                type: integer
+              ballotsSubmitted:
+                type: integer
+              averageCandidatesRanked:
+                type: number
+          fullData:
             type: array
             items:
               type: object
-              properties:
-                rounds:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      candidate:
-                        type: string
-                      votes: 
-                        type: integer
+              # properties:
+              #   rounds:
+              #     type: array
+              #     items:
+              #       type: object
+              #       properties:
+              #         candidate:
+              #           type: string
+              #         votes: 
+              #           type: integer
                 
 
   Voter:
@@ -296,6 +311,11 @@ definitions:
   Ballot:
     type: object
     properties:
+      id: 
+        type: string
+      electionId:
+        type: string
+        format: uuid
       voter: 
         type: string
         format: email

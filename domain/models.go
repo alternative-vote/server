@@ -1,37 +1,31 @@
 package domain
 
-import (
-	"encoding/json"
+// type Election struct {
+// 	generated.Election
+// 	Ballots []generated.Ballot `json:"ballots"`
+// }
 
-	"github.com/alternative-vote/server/generated"
-)
+// // pretty lame stuff right here
+// type election struct {
+// 	Ballots []generated.Ballot `json:"ballots"`
+// }
 
-type Election struct {
-	generated.Election
-	Ballots []generated.Ballot `json:"ballots"`
-}
+// func (o *Election) UnmarshalJSON(data []byte) error {
+// 	var err error
 
-// pretty lame stuff right here
-type election struct {
-	Ballots []generated.Ballot `json:"ballots"`
-}
+// 	// call the unmarshal function on the embedded struct
+// 	err = o.Election.UnmarshalJSON(data)
+// 	if err != nil {
+// 		return err
+// 	}
 
-func (o *Election) UnmarshalJSON(data []byte) error {
-	var err error
+// 	//now unmarshal just the ballots using the private object and then copy that value over to our public struct
+// 	privateObject := new(election)
+// 	err = json.Unmarshal(data, privateObject)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	o.Ballots = privateObject.Ballots
 
-	// call the unmarshal function on the embedded struct
-	err = o.Election.UnmarshalJSON(data)
-	if err != nil {
-		return err
-	}
-
-	//now unmarshal just the ballots using the private object and then copy that value over to our public struct
-	privateObject := new(election)
-	err = json.Unmarshal(data, privateObject)
-	if err != nil {
-		return err
-	}
-	o.Ballots = privateObject.Ballots
-
-	return nil
-}
+// 	return nil
+// }
