@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
 	"github.com/alternative-vote/server/utils"
 	"github.com/satori/go.uuid"
@@ -19,9 +18,9 @@ func (o *Controller) CreateElection(req *CreateElectionRequest) *CreateElectionR
 
 	claims := utils.GetClaims(req.Context)
 
-	var election domain.Election
+	var election Election
 
-	election.Election = req.Body
+	election = req.Body
 
 	election.Id = uuid.NewV4().String()
 	election.DateCreated.Time = time.Now().UTC()
@@ -46,6 +45,6 @@ func (o *Controller) CreateElection(req *CreateElectionRequest) *CreateElectionR
 
 	return &CreateElectionResponse{
 		StatusCode: 201,
-		Body:       election.Election,
+		Body:       election,
 	}
 }

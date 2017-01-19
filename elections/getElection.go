@@ -9,7 +9,7 @@ func (o *Controller) GetElection(req *GetElectionRequest) *GetElectionResponse {
 	
 	return &GetElectionResponse{
 		StatusCode: 200,
-		Body:       election.Election,
+		Body:       election,
 	}
 
 }

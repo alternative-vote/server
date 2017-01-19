@@ -2,11 +2,11 @@ package generated
 
 import "fmt"
 
-func (o *ElectionResultsElectionsRounds) extraFields(parentName string) []string {
+func (o *ElectionResultsStats) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"candidate", "votes"}, fieldFromJSON) {
+		if !hasElem([]string{"start", "end", "numVoters", "ballotsSubmitted", "averageCandidatesRanked"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -14,7 +14,7 @@ func (o *ElectionResultsElectionsRounds) extraFields(parentName string) []string
     return ret
 }
 
-func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
+func (o *ElectionResultsStats) validate(parentName string) []string {
 	errors := []string{}
 
     //check for extra fields first
@@ -27,9 +27,73 @@ func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
 	//go through each property
 
 	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "candidate") {
-		//candidate is a primative
-		candidateErr := func(propValue string, parentName string) []string {
+	if hasElem(o.MetaData.GetDeserializedProperties(), "start") {
+		//start is a primative
+		startErr := func(propValue APITime, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid date-time
+    if FormatValidators["date-time"] != nil {
+      valid, formatError := FormatValidators["date-time"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.start: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Start, parentName)
+		if startErr != nil {
+			errors = append(errors, startErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "end") {
+		//end is a primative
+		endErr := func(propValue APITime, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid date-time
+    if FormatValidators["date-time"] != nil {
+      valid, formatError := FormatValidators["date-time"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.end: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.End, parentName)
+		if endErr != nil {
+			errors = append(errors, endErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "numVoters") {
+		//numVoters is a primative
+		numVotersErr := func(propValue int64, parentName string) []string {
     ret := []string{}
     v := propValue
     _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
@@ -41,9 +105,9 @@ func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
 
 
     return ret
-}(o.Candidate, parentName)
-		if candidateErr != nil {
-			errors = append(errors, candidateErr...)
+}(o.NumVoters, parentName)
+		if numVotersErr != nil {
+			errors = append(errors, numVotersErr...)
 		}
 	}
 
@@ -52,9 +116,9 @@ func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
 
 
 	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "votes") {
-		//votes is a primative
-		votesErr := func(propValue int64, parentName string) []string {
+	if hasElem(o.MetaData.GetDeserializedProperties(), "ballotsSubmitted") {
+		//ballotsSubmitted is a primative
+		ballotsSubmittedErr := func(propValue int64, parentName string) []string {
     ret := []string{}
     v := propValue
     _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
@@ -66,9 +130,9 @@ func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
 
 
     return ret
-}(o.Votes, parentName)
-		if votesErr != nil {
-			errors = append(errors, votesErr...)
+}(o.BallotsSubmitted, parentName)
+		if ballotsSubmittedErr != nil {
+			errors = append(errors, ballotsSubmittedErr...)
 		}
 	}
 
@@ -76,38 +140,24 @@ func (o *ElectionResultsElectionsRounds) validate(parentName string) []string {
 
 
 
-    return errors
-}
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "averageCandidatesRanked") {
+		//averageCandidatesRanked is a primative
+		averageCandidatesRankedErr := func(propValue float64, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
 
-func (o *ElectionResultsElections) extraFields(parentName string) []string {
-	ret := []string{}
 
-    for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"rounds"}, fieldFromJSON) {
-			ret = append(ret, parentName+"."+fieldFromJSON)
-		}
-	}
+
+
+
 
     return ret
-}
-
-func (o *ElectionResultsElections) validate(parentName string) []string {
-	errors := []string{}
-
-    //check for extra fields first
-    extraFields := o.extraFields(parentName)
-	if len(extraFields) > 0 {
-		errors = append(errors, fmt.Sprintf("extra fields not allowed: %v", extraFields))
-	}
-
-
-	//go through each property
-
-	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "rounds") {
-		//rounds is an array of structs
-		for _, v := range o.Rounds {
-			errors = append(errors, v.validate(parentName + ".rounds")...)
+}(o.AverageCandidatesRanked, parentName)
+		if averageCandidatesRankedErr != nil {
+			errors = append(errors, averageCandidatesRankedErr...)
 		}
 	}
 
@@ -122,7 +172,7 @@ func (o *ElectionResults) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"orderedCandidates", "elections"}, fieldFromJSON) {
+		if !hasElem([]string{"orderedCandidates", "stats", "fullData"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -155,10 +205,36 @@ func (o *ElectionResults) validate(parentName string) []string {
 
 
 	//only run validation on stuff that came over the wire
-	if hasElem(o.MetaData.GetDeserializedProperties(), "elections") {
-		//elections is an array of structs
-		for _, v := range o.Elections {
-			errors = append(errors, v.validate(parentName + ".elections")...)
+	if hasElem(o.MetaData.GetDeserializedProperties(), "stats") {
+		//stats is a struct
+		errors = append(errors, o.Stats.validate(parentName + ".stats")...)
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+	errors = append(errors, o.Stats.validate(parentName + ".stats")...)
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "fullData") {
+		//fullData is an array of primatives
+		for _, v := range o.FullData {
+			fullDataErr := func(propValue interface{}, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(v, parentName)
+			if fullDataErr != nil {
+				errors = append(errors, fullDataErr...)
+			}
 		}
 	}
 
@@ -702,7 +778,7 @@ func (o *Ballot) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"voter", "votes", "isSubmitted"}, fieldFromJSON) {
+		if !hasElem([]string{"id", "electionId", "voter", "votes", "isSubmitted"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -721,6 +797,63 @@ func (o *Ballot) validate(parentName string) []string {
 
 
 	//go through each property
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "id") {
+		//id is a primative
+		idErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+
+
+
+
+
+    return ret
+}(o.Id, parentName)
+		if idErr != nil {
+			errors = append(errors, idErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "electionId") {
+		//electionId is a primative
+		electionIdErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid uuid
+    if FormatValidators["uuid"] != nil {
+      valid, formatError := FormatValidators["uuid"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.electionId: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.ElectionId, parentName)
+		if electionIdErr != nil {
+			errors = append(errors, electionIdErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "voter") {

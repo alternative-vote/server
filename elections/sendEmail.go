@@ -6,12 +6,12 @@ import (
 	"strings"
 
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
+	
 	. "github.com/alternative-vote/server/generated"
 )
 
 func (o *Controller) SendEmail(req *SendEmailRequest) *SendEmailResponse {
-	var election domain.Election
+	var election Election
 
 	//get this election from the DB
 	results, err := o.Client.Get().
@@ -47,7 +47,7 @@ func (o *Controller) SendEmail(req *SendEmailRequest) *SendEmailResponse {
 
 	return &SendEmailResponse{
 		StatusCode: 200,
-		Body:       election.Election,
+		Body:       election,
 	}
 
 }

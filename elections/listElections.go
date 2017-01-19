@@ -4,7 +4,6 @@ import (
 	"reflect"
 
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
 )
 
@@ -20,11 +19,11 @@ func (o *Controller) ListElections(req *ListElectionsRequest) *ListElectionsResp
 		Do()
 	checkError(err)
 
-	var e domain.Election
+	var e Election
 	for _, item := range searchResults.Each(reflect.TypeOf(e)) {
-		if election, ok := item.(domain.Election); ok {
-			
-			elections = append(elections, election.Election)
+		if election, ok := item.(Election); ok {
+
+			elections = append(elections, election)
 		}
 	}
 
