@@ -255,6 +255,21 @@ definitions:
             type: array
             items:
               $ref: "#/definitions/Candidate"
+          stats:
+            type: object
+            properties:
+              start: 
+                type: string
+                format: date-time
+              end:
+                type: string
+                format: date-time
+              numVoters: 
+                type: integer
+              ballotsSubmitted:
+                type: integer
+              averageCandidatesRanked:
+                type: number
           fullData:
             type: array
             items:

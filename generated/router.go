@@ -262,6 +262,28 @@ func Router() *mux.Router {
 	                                                }
 	                                            }
 	                                        },
+	                                        "stats": {
+	                                            "type": "object",
+	                                            "properties": {
+	                                                "start": {
+	                                                    "type": "string",
+	                                                    "format": "date-time"
+	                                                },
+	                                                "end": {
+	                                                    "type": "string",
+	                                                    "format": "date-time"
+	                                                },
+	                                                "numVoters": {
+	                                                    "type": "integer"
+	                                                },
+	                                                "ballotsSubmitted": {
+	                                                    "type": "integer"
+	                                                },
+	                                                "averageCandidatesRanked": {
+	                                                    "type": "number"
+	                                                }
+	                                            }
+	                                        },
 	                                        "fullData": {
 	                                            "type": "array",
 	                                            "items": {
@@ -417,6 +439,28 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
+	                                            }
+	                                        }
+	                                    },
 	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
@@ -558,6 +602,28 @@ func Router() *mux.Router {
 	                                                "description": {
 	                                                    "type": "string"
 	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
 	                                            }
 	                                        }
 	                                    },
@@ -916,6 +982,28 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
+	                                            }
+	                                        }
+	                                    },
 	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
@@ -1072,6 +1160,28 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
+	                                            }
+	                                        }
+	                                    },
 	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
@@ -1213,6 +1323,28 @@ func Router() *mux.Router {
 	                                                "description": {
 	                                                    "type": "string"
 	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
 	                                            }
 	                                        }
 	                                    },
@@ -1479,6 +1611,28 @@ func Router() *mux.Router {
 	                                            }
 	                                        }
 	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
+	                                            }
+	                                        }
+	                                    },
 	                                    "fullData": {
 	                                        "type": "array",
 	                                        "items": {
@@ -1719,6 +1873,28 @@ func Router() *mux.Router {
 	                                                "description": {
 	                                                    "type": "string"
 	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
 	                                            }
 	                                        }
 	                                    },
@@ -1985,6 +2161,28 @@ func Router() *mux.Router {
 	                                                "description": {
 	                                                    "type": "string"
 	                                                }
+	                                            }
+	                                        }
+	                                    },
+	                                    "stats": {
+	                                        "type": "object",
+	                                        "properties": {
+	                                            "start": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "end": {
+	                                                "type": "string",
+	                                                "format": "date-time"
+	                                            },
+	                                            "numVoters": {
+	                                                "type": "integer"
+	                                            },
+	                                            "ballotsSubmitted": {
+	                                                "type": "integer"
+	                                            },
+	                                            "averageCandidatesRanked": {
+	                                                "type": "number"
 	                                            }
 	                                        }
 	                                    },
@@ -2375,6 +2573,28 @@ func Router() *mux.Router {
 	                                                    }
 	                                                }
 	                                            },
+	                                            "stats": {
+	                                                "type": "object",
+	                                                "properties": {
+	                                                    "start": {
+	                                                        "type": "string",
+	                                                        "format": "date-time"
+	                                                    },
+	                                                    "end": {
+	                                                        "type": "string",
+	                                                        "format": "date-time"
+	                                                    },
+	                                                    "numVoters": {
+	                                                        "type": "integer"
+	                                                    },
+	                                                    "ballotsSubmitted": {
+	                                                        "type": "integer"
+	                                                    },
+	                                                    "averageCandidatesRanked": {
+	                                                        "type": "number"
+	                                                    }
+	                                                }
+	                                            },
 	                                            "fullData": {
 	                                                "type": "array",
 	                                                "items": {
@@ -2389,8 +2609,7 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "id": {
-	                                        "type": "string",
-	                                        "format": "uuid"
+	                                        "type": "string"
 	                                    },
 	                                    "electionId": {
 	                                        "type": "string",
@@ -2444,8 +2663,7 @@ func Router() *mux.Router {
 	                        "type": "object",
 	                        "properties": {
 	                            "id": {
-	                                "type": "string",
-	                                "format": "uuid"
+	                                "type": "string"
 	                            },
 	                            "electionId": {
 	                                "type": "string",
@@ -2614,6 +2832,28 @@ func Router() *mux.Router {
 	                                                    }
 	                                                }
 	                                            },
+	                                            "stats": {
+	                                                "type": "object",
+	                                                "properties": {
+	                                                    "start": {
+	                                                        "type": "string",
+	                                                        "format": "date-time"
+	                                                    },
+	                                                    "end": {
+	                                                        "type": "string",
+	                                                        "format": "date-time"
+	                                                    },
+	                                                    "numVoters": {
+	                                                        "type": "integer"
+	                                                    },
+	                                                    "ballotsSubmitted": {
+	                                                        "type": "integer"
+	                                                    },
+	                                                    "averageCandidatesRanked": {
+	                                                        "type": "number"
+	                                                    }
+	                                                }
+	                                            },
 	                                            "fullData": {
 	                                                "type": "array",
 	                                                "items": {
@@ -2628,8 +2868,7 @@ func Router() *mux.Router {
 	                                "type": "object",
 	                                "properties": {
 	                                    "id": {
-	                                        "type": "string",
-	                                        "format": "uuid"
+	                                        "type": "string"
 	                                    },
 	                                    "electionId": {
 	                                        "type": "string",

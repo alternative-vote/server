@@ -1,7 +1,17 @@
 package generated
 
+type ElectionResultsStats struct {
+    Start APITime `json:"start"`
+    End APITime `json:"end"`
+    NumVoters int64 `json:"numVoters"`
+    BallotsSubmitted int64 `json:"ballotsSubmitted"`
+    AverageCandidatesRanked float64 `json:"averageCandidatesRanked"`
+    MetaData SerializationMetadata `json:"-"`
+}
+
 type ElectionResults struct {
     OrderedCandidates []Candidate `json:"orderedCandidates"`
+    Stats ElectionResultsStats `json:"stats"`
     FullData []interface{} `json:"fullData"`
     MetaData SerializationMetadata `json:"-"`
 }

@@ -49,6 +49,14 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 
 func calculateResults(election Election, electionBallots []Ballot) ElectionResults {
 	ret := ElectionResults{}
+
+	ret.Stats.NumVoters = int64(len(election.Voters))
+	ret.Stats.Start = election.DateStarted
+	ret.Stats.End = election.DateEnded
+	ret.Stats.BallotsSubmitted = int64(len(electionBallots))
+
+	var totalVotes float64
+
 	candidates := []string{}
 	ballots := [][]string{}
 
@@ -63,9 +71,12 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		votes := []string{}
 		for _, vote := range ballot.Votes {
 			votes = append(votes, vote.Title)
+			totalVotes++
 		}
 		ballots = append(ballots, votes)
 	}
+
+	ret.Stats.AverageCandidatesRanked = totalVotes / float64(ret.Stats.BallotsSubmitted)
 
 	for len(candidates) > 0 {
 		//running a new election
@@ -91,7 +102,7 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		ret.FullData = append(ret.FullData, results)
 
 	}
-	spew.Dump(ret.FullData)
+	spew.Dump(ret.Stats)
 	return ret
 }
 

@@ -173,10 +173,11 @@ func (o *Controller) getBallots(electionId string) []Ballot {
 
 	var b Ballot
 	for _, item := range searchResults.Each(reflect.TypeOf(b)) {
-		if ballot, ok := item.(Ballot); ok {
+		if ballot, ok := item.(Ballot); ok && ballot.ElectionId == electionId {
 			ballots = append(ballots, ballot)
 		}
 	}
+
 	return ballots
 }
 

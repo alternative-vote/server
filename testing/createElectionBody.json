@@ -149,20 +149,16 @@
   "state": "running",
   "voters": [
     {
-      "email": "chris.langager@logrhythm.com",
-      "emailSent": true
+      "email": "chris.langager@logrhythm.com"
     },
     {
-      "email": "christopher.langager@gmail.com",
-      "emailSent": true
+      "email": "christopher.langager@gmail.com"
     },
     {
-      "email": "saizul@gmail.com",
-      "emailSent": true
+      "email": "saizul@gmail.com"
     },
     {
-      "email": "erin.noe-payne@logrhythm.com",
-      "emailSent": true
+      "email": "erin.noe-payne@logrhythm.com"
     },
     {
       "email" : "carly.bryson@logrhythm.com"
