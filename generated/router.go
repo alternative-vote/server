@@ -2388,6 +2388,14 @@ func Router() *mux.Router {
 	                            "ballot": {
 	                                "type": "object",
 	                                "properties": {
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
+	                                    "electionId": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
 	                                    "voter": {
 	                                        "type": "string",
 	                                        "format": "email"
@@ -2435,6 +2443,14 @@ func Router() *mux.Router {
 	                    "schema": {
 	                        "type": "object",
 	                        "properties": {
+	                            "id": {
+	                                "type": "string",
+	                                "format": "uuid"
+	                            },
+	                            "electionId": {
+	                                "type": "string",
+	                                "format": "uuid"
+	                            },
 	                            "voter": {
 	                                "type": "string",
 	                                "format": "email"
@@ -2611,6 +2627,14 @@ func Router() *mux.Router {
 	                            "ballot": {
 	                                "type": "object",
 	                                "properties": {
+	                                    "id": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
+	                                    "electionId": {
+	                                        "type": "string",
+	                                        "format": "uuid"
+	                                    },
 	                                    "voter": {
 	                                        "type": "string",
 	                                        "format": "email"

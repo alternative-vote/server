@@ -3,17 +3,16 @@ package elections
 import (
 	"time"
 
-	"github.com/alternative-vote/server/domain"
 	. "github.com/alternative-vote/server/generated"
 	"github.com/alternative-vote/server/utils"
 )
 
 func (o *Controller) UpdateElection(req *UpdateElectionRequest) *UpdateElectionResponse {
-	var wireElection domain.Election
-	var dbElection domain.Election
+	var wireElection Election
+	var dbElection Election
 
 	//pull the election off the wire
-	wireElection.Election = req.Body
+	wireElection = req.Body
 
 	//get this election from the DB
 	dbElection = o.getElectionById(req.PathParams.Id)
@@ -31,6 +30,6 @@ func (o *Controller) UpdateElection(req *UpdateElectionRequest) *UpdateElectionR
 
 	return &UpdateElectionResponse{
 		StatusCode: 200,
-		Body:       dbElection.Election,
+		Body:       dbElection,
 	}
 }

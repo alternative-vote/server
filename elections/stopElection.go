@@ -7,8 +7,9 @@ import (
 
 	"github.com/Khelldar/altVote"
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
+
 	. "github.com/alternative-vote/server/generated"
+	"github.com/davecgh/go-spew/spew"
 )
 
 func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionResponse {
@@ -20,7 +21,7 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	// if election.State == consts.Complete {
 	// 	return &StopElectionResponse{
 	// 		StatusCode: 200,
-	// 		Body:       election.Election,
+	// 		Body:       election,
 	// 	}
 	// }
 
@@ -29,22 +30,24 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 		panic(HttpError(409).Message("can't stop an election that hasn't started yet"))
 	}
 
+	ballots := o.getBallots(election.Id)
+
 	//update state, metadata, and calculate results
 	election.State = consts.Complete
 	election.DateUpdated.Time = time.Now().UTC()
 	election.DateEnded.Time = time.Now().UTC()
-	election.Results = calculateResults(election)
+	election.Results = calculateResults(election, ballots)
 
 	//save changes to the db
 	o.saveElection(election)
 
 	return &StopElectionResponse{
 		StatusCode: 200,
-		Body:       election.Election,
+		Body:       election,
 	}
 }
 
-func calculateResults(election domain.Election) ElectionResults {
+func calculateResults(election Election, electionBallots []Ballot) ElectionResults {
 	ret := ElectionResults{}
 	candidates := []string{}
 	ballots := [][]string{}
@@ -53,7 +56,7 @@ func calculateResults(election domain.Election) ElectionResults {
 		candidates = append(candidates, c.Title)
 	}
 
-	for _, ballot := range election.Ballots {
+	for _, ballot := range electionBallots {
 		if !ballot.IsSubmitted {
 			continue
 		}
@@ -71,7 +74,7 @@ func calculateResults(election domain.Election) ElectionResults {
 		if err == altVote.NoVotes {
 			break //if we get here, that means that there were some number of candidates that did not get a single vote
 		}
-		fmt.Printf("%v won!  Removing them and rerunning...\n", results.Winner)
+		fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
 
 		//add the winner of this election to the ordered candidates list (this is the ranked list of winners)
 		ret.OrderedCandidates = append(ret.OrderedCandidates, getCandidate(election.Candidates, results.Winner))
@@ -88,7 +91,7 @@ func calculateResults(election domain.Election) ElectionResults {
 		ret.FullData = append(ret.FullData, results)
 
 	}
-
+	spew.Dump(ret.FullData)
 	return ret
 }
 

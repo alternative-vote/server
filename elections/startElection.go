@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/alternative-vote/server/consts"
-	"github.com/alternative-vote/server/domain"
+	
 	. "github.com/alternative-vote/server/generated"
 )
 
 func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResponse {
-	var election domain.Election
+	var election Election
 
 	//get this election from the DB
 	results, err := o.Client.Get().
@@ -25,7 +25,7 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 	if election.State == consts.Running {
 		return &StartElectionResponse{
 			StatusCode: 200,
-			Body:       election.Election,
+			Body:       election,
 		}
 	}
 
@@ -50,6 +50,6 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 
 	return &StartElectionResponse{
 		StatusCode: 200,
-		Body:       election.Election,
+		Body:       election,
 	}
 }

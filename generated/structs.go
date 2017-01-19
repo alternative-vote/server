@@ -38,6 +38,8 @@ type Timer struct {
 }
 
 type Ballot struct {
+    Id string `json:"id"`
+    ElectionId string `json:"electionId"`
     Voter string `json:"voter"`
     Votes []Candidate `json:"votes"`
     IsSubmitted bool `json:"isSubmitted"`

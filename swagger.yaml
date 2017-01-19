@@ -296,6 +296,11 @@ definitions:
   Ballot:
     type: object
     properties:
+      id: 
+        type: string
+      electionId:
+        type: string
+        format: uuid
       voter: 
         type: string
         format: email

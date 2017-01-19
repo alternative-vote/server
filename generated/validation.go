@@ -601,7 +601,7 @@ func (o *Ballot) extraFields(parentName string) []string {
 	ret := []string{}
 
     for _, fieldFromJSON := range o.MetaData.GetDeserializedProperties() {
-		if !hasElem([]string{"voter", "votes", "isSubmitted"}, fieldFromJSON) {
+		if !hasElem([]string{"id", "electionId", "voter", "votes", "isSubmitted"}, fieldFromJSON) {
 			ret = append(ret, parentName+"."+fieldFromJSON)
 		}
 	}
@@ -620,6 +620,70 @@ func (o *Ballot) validate(parentName string) []string {
 
 
 	//go through each property
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "id") {
+		//id is a primative
+		idErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid uuid
+    if FormatValidators["uuid"] != nil {
+      valid, formatError := FormatValidators["uuid"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.id: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.Id, parentName)
+		if idErr != nil {
+			errors = append(errors, idErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
+
+	//only run validation on stuff that came over the wire
+	if hasElem(o.MetaData.GetDeserializedProperties(), "electionId") {
+		//electionId is a primative
+		electionIdErr := func(propValue string, parentName string) []string {
+    ret := []string{}
+    v := propValue
+    _ = &v //if there's no validation, we need to trick the compiler into thinking v is getting used
+    
+
+    //check to see if this is a valid uuid
+    if FormatValidators["uuid"] != nil {
+      valid, formatError := FormatValidators["uuid"](propValue)
+      if !valid {
+        errors = append(errors, fmt.Sprintf("%v.electionId: %v", parentName, formatError))
+      }
+    }
+
+
+
+
+
+    return ret
+}(o.ElectionId, parentName)
+		if electionIdErr != nil {
+			errors = append(errors, electionIdErr...)
+		}
+	}
+
+	//This is pretty bad - need to set defaults on embedded structs that didn't come over the wire'
+
+
 
 	//only run validation on stuff that came over the wire
 	if hasElem(o.MetaData.GetDeserializedProperties(), "voter") {
