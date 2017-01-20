@@ -90,7 +90,7 @@ func initDB(config *config.Config) (*elastic.Client, error) {
 		return nil, err
 	}
 
-	esClient.DeleteIndex(consts.INDEX).Do()
+	// esClient.DeleteIndex(consts.INDEX).Do()
 
 	//check to see if our one index exists
 	exists, err := esClient.IndexExists(consts.INDEX).Do()
