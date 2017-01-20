@@ -51,8 +51,11 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	go func() {
 		for i, voter := range election.Voters {
 			if !election.Voters[i].ResultsEmailSent {
-				o.sendResultsEmail(election, voter.Email)
-				election.Voters[i].ResultsEmailSent = true
+				err := o.sendResultsEmail(election, voter.Email)
+				if err == nil {
+					election.Voters[i].ResultsEmailSent = true
+				}
+
 			}
 		}
 		o.saveElection(election)

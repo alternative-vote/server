@@ -45,8 +45,11 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 	go func() {
 		//if that worked, let's send out emails to the voters
 		for i, voter := range election.Voters {
-			o.sendEmail(election, voter.Email)
-			election.Voters[i].VoteEmailSent = true
+			err := o.sendEmail(election, voter.Email)
+			if err == nil {
+				election.Voters[i].VoteEmailSent = true
+			}
+
 		}
 		o.saveElection(election)
 	}()

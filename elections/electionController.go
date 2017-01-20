@@ -226,7 +226,7 @@ func (o *Controller) getClaims(tokenString string) VoterClaims {
 	return *claims
 }
 
-func (o *Controller) sendEmail(election Election, emailAddress string) {
+func (o *Controller) sendEmail(election Election, emailAddress string) error {
 	fmt.Printf("Sending email to %v...", emailAddress)
 	token := o.GetVoterToken(election.Id, emailAddress)
 
@@ -256,9 +256,11 @@ This link acts as your voter registration,  so don't share it with anyone else!
 	d := o.getDialer()
 
 	if err := d.DialAndSend(m); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return err
 	}
 	fmt.Printf("success.\n")
+	return nil
 
 	// fmt.Println("email sent to ", emailAddress)
 	// fmt.Println("token = ", token)
@@ -268,7 +270,7 @@ func (o *Controller) getDialer() *gomail.Dialer {
 	return gomail.NewDialer("smtp.sendgrid.net", 587, "apikey", o.Config.SMTP_PASSWORD)
 }
 
-func (o *Controller) sendResultsEmail(election Election, emailAddress string) {
+func (o *Controller) sendResultsEmail(election Election, emailAddress string) error {
 	fmt.Printf("Sending results email to %v...", emailAddress)
 	token := o.GetVoterToken(election.Id, emailAddress)
 
@@ -295,12 +297,14 @@ func (o *Controller) sendResultsEmail(election Election, emailAddress string) {
 	d := o.getDialer()
 
 	if err := d.DialAndSend(m); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return err
 	}
 
 	// fmt.Println("results email sent to ", emailAddress)
 	// fmt.Println("token = ", token)
 	fmt.Printf("success.\n")
+	return nil
 }
 
 const css = `
