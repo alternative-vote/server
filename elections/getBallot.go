@@ -8,7 +8,6 @@ func (o *Controller) GetBallot(req *GetBallotRequest) *GetBallotResponse {
 	claims := o.getClaims(req.PathParams.Token)
 
 	//get the full election from the db
-	fmt.Println(claims)
 	election := o.getElectionById(claims.ElectionId)
 
 	//if the ballot already exists, we return it, otherwise, create and then return it

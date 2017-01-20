@@ -206,7 +206,7 @@ func (o *Controller) getClaims(tokenString string) VoterClaims {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			panic(HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
 		}
-		return o.Config.Secret, nil
+		return []byte(o.Config.Secret), nil
 	})
 
 	if token == nil {
