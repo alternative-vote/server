@@ -100,12 +100,12 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 
 	for len(candidates) > 0 {
 		//running a new election
-		// fmt.Printf("Running election with %v candidates: %v\n", len(candidates), candidates)
+		fmt.Printf("Running election with %v candidates\n", len(candidates))
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
 			break //if we get here, that means that there were some number of candidates that did not get a single vote
 		}
-		// fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
+		fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
 
 		//add the winner of this election to the ordered candidates list (this is the ranked list of winners)
 		ret.OrderedCandidates = append(ret.OrderedCandidates, getCandidate(election.Candidates, results.Winner))
