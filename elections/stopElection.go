@@ -8,6 +8,8 @@ import (
 
 	"math"
 
+	"fmt"
+
 	. "github.com/alternative-vote/server/generated"
 )
 
@@ -123,6 +125,8 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 
 	// spew.Dump(ret.FullData)
 	ret.FullData = nil
+
+	fmt.Println("done calculating results, orderedCandidates length = ", len(ret.OrderedCandidates))
 
 	return ret
 }
