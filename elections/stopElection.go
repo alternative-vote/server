@@ -3,7 +3,7 @@ package elections
 import (
 	"time"
 
-	"github.com/Khelldar/altVote"
+	"github.com/alternative-vote/server/altVote"
 	"github.com/alternative-vote/server/consts"
 	"github.com/davecgh/go-spew/spew"
 
