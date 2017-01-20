@@ -103,6 +103,7 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		fmt.Printf("Running election with %v candidates\n", len(candidates))
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
+			fmt.Println("no more votes, we're done here.")
 			break //if we get here, that means that there were some number of candidates that did not get a single vote
 		}
 		fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
