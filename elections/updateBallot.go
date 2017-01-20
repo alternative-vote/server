@@ -7,7 +7,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-const TestElectionID = "03a00b8a-722b-4c23-bb62-47c46f9edd34"
+const TestElectionID = "9751719a-b55c-46ab-8478-be6238a9a555"
 
 func (o *Controller) UpdateBallot(req *UpdateBallotRequest) *UpdateBallotResponse {
 	statusCode := 200
