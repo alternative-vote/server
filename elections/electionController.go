@@ -45,7 +45,7 @@ func (o *Controller) GetVoterToken(electionId, emailAddress string) string {
 	})
 
 	//sign the token with the hardcoded secret
-	tokenString, err := token.SignedString(o.Config.Secret)
+	tokenString, err := token.SignedString([]byte(o.Config.Secret))
 	if err != nil {
 		panic(err)
 	}
