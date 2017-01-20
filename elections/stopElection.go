@@ -73,7 +73,6 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 	ret.Stats.NumVoters = int64(len(election.Voters))
 	ret.Stats.Start = election.DateStarted
 	ret.Stats.End = election.DateEnded
-	ret.Stats.BallotsSubmitted = int64(len(electionBallots))
 
 	var totalVotes float64
 
@@ -96,11 +95,12 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		ballots = append(ballots, votes)
 	}
 
+	ret.Stats.BallotsSubmitted = int64(len(ballots))
 	ret.Stats.AverageCandidatesRanked = totalVotes / float64(ret.Stats.BallotsSubmitted)
 
 	for len(candidates) > 0 {
 		//running a new election
-		fmt.Printf("Running election with %v candidates\n", len(candidates))
+		fmt.Printf("Running election with %v candidates and %v ballots\n", len(candidates), len(ballots))
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
 			fmt.Println("no more votes, we're done here.")
