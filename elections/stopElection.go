@@ -5,7 +5,6 @@ import (
 
 	"github.com/alternative-vote/server/altVote"
 	"github.com/alternative-vote/server/consts"
-	"github.com/davecgh/go-spew/spew"
 
 	"math"
 
@@ -102,8 +101,8 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 	for len(candidates) > 0 {
 		//running a new election
 		fmt.Printf("Running election with %v candidates and %v ballots\n", len(candidates), len(ballots))
-		spew.Dump(candidates)
-		spew.Dump(ballots[:5])
+		// spew.Dump(candidates)
+		// spew.Dump(ballots[:5])
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
 			fmt.Println("no more votes, we're done here.")
