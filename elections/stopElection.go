@@ -3,10 +3,12 @@ package elections
 import (
 	"time"
 
-	"github.com/Khelldar/altVote"
+	"github.com/alternative-vote/server/altVote"
 	"github.com/alternative-vote/server/consts"
 
 	"math"
+
+	"fmt"
 
 	. "github.com/alternative-vote/server/generated"
 )
@@ -71,7 +73,6 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 	ret.Stats.NumVoters = int64(len(election.Voters))
 	ret.Stats.Start = election.DateStarted
 	ret.Stats.End = election.DateEnded
-	ret.Stats.BallotsSubmitted = int64(len(electionBallots))
 
 	var totalVotes float64
 
@@ -94,16 +95,20 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 		ballots = append(ballots, votes)
 	}
 
+	ret.Stats.BallotsSubmitted = int64(len(ballots))
 	ret.Stats.AverageCandidatesRanked = totalVotes / float64(ret.Stats.BallotsSubmitted)
 
 	for len(candidates) > 0 {
 		//running a new election
-		// fmt.Printf("Running election with %v candidates: %v\n", len(candidates), candidates)
+		fmt.Printf("Running election with %v candidates and %v ballots\n", len(candidates), len(ballots))
+		// spew.Dump(candidates)
+		// spew.Dump(ballots[:5])
 		results, err := altVote.GetResults(candidates, ballots)
 		if err == altVote.NoVotes {
+			fmt.Println("no more votes, we're done here.")
 			break //if we get here, that means that there were some number of candidates that did not get a single vote
 		}
-		// fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
+		fmt.Printf("%v won after %v round(s)!  Removing them and rerunning...\n\n\n", results.Winner, len(results.Rounds))
 
 		//add the winner of this election to the ordered candidates list (this is the ranked list of winners)
 		ret.OrderedCandidates = append(ret.OrderedCandidates, getCandidate(election.Candidates, results.Winner))
@@ -123,6 +128,8 @@ func calculateResults(election Election, electionBallots []Ballot) ElectionResul
 
 	// spew.Dump(ret.FullData)
 	ret.FullData = nil
+
+	fmt.Println("done calculating results, orderedCandidates length = ", len(ret.OrderedCandidates))
 
 	return ret
 }
