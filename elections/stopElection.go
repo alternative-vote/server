@@ -45,12 +45,16 @@ func (o *Controller) StopElection(req *StopElectionRequest) *StopElectionRespons
 	//save changes to the db
 	o.saveElection(election)
 
-	for i, voter := range election.Voters {
-		if !election.Voters[i].ResultsEmailSent {
-			go sendResultsEmail(election, voter.Email)
-			election.Voters[i].ResultsEmailSent = true
+	//fire of a go routine to send emails one by one
+	go func() {
+		for i, voter := range election.Voters {
+			if !election.Voters[i].ResultsEmailSent {
+				o.sendResultsEmail(election, voter.Email)
+				election.Voters[i].ResultsEmailSent = true
+			}
 		}
-	}
+		o.saveElection(election)
+	}()
 
 	//save changes to the db again post emails sent
 	o.saveElection(election)

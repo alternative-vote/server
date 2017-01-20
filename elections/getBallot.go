@@ -5,7 +5,7 @@ import "fmt"
 
 func (o *Controller) GetBallot(req *GetBallotRequest) *GetBallotResponse {
 	//Get voter claims off of the token
-	claims := getClaims(req.PathParams.Token)
+	claims := o.getClaims(req.PathParams.Token)
 
 	//get the full election from the db
 	fmt.Println(claims)

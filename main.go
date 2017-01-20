@@ -15,6 +15,7 @@ import (
 	"path"
 
 	"github.com/alternative-vote/server/authentication"
+	"github.com/alternative-vote/server/config"
 	"github.com/alternative-vote/server/consts"
 	"github.com/alternative-vote/server/elections"
 	"github.com/alternative-vote/server/generated"
@@ -29,16 +30,18 @@ func main() {
 		port = "8000"
 	}
 
-	esClient, err := initDB()
+	config := config.NewConfig()
+
+	esClient, err := initDB(config)
 	for err != nil {
 		fmt.Println("there was an error connecting to the DB, trying again in 2 seconds...")
 		time.Sleep(time.Second * 2)
-		esClient, err = initDB()
+		esClient, err = initDB(config)
 	}
 
 	//link up controllers and start the server
-	generated.RouterElectionController = &elections.Controller{Client: esClient}
-	generated.RouterAuthenticationController = &authentication.Controller{}
+	generated.RouterElectionController = &elections.Controller{Client: esClient, Config: config}
+	generated.RouterAuthenticationController = &authentication.Controller{Config: config}
 
 	//url rewrite to strip /api - this could go away if you put /api in the swagger file
 	generated.AddMiddleware(func(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
@@ -50,7 +53,7 @@ func main() {
 	})
 
 	//Auth middleware for admin stuff
-	generated.AddMiddleware(adminAuthMiddleare, `/elections/{restOfRoute:.*}`)
+	generated.AddMiddleware(adminAuthMiddleare(config), `/elections/{restOfRoute:.*}`)
 
 	//subrouter for all API stuff
 	http.Handle("/api/", generated.Stack())
@@ -80,14 +83,14 @@ func main() {
 
 }
 
-func initDB() (*elastic.Client, error) {
+func initDB(config *config.Config) (*elastic.Client, error) {
 	// Create a esClient and connect to http://192.168.2.10:9201
-	esClient, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(consts.DB_LOC))
+	esClient, err := elastic.NewClient(elastic.SetSniff(false), elastic.SetURL(config.DB_Loc))
 	if err != nil {
 		return nil, err
 	}
 
-	// esClient.DeleteIndex(consts.INDEX).Do()
+	esClient.DeleteIndex(consts.INDEX).Do()
 
 	//check to see if our one index exists
 	exists, err := esClient.IndexExists(consts.INDEX).Do()
@@ -103,39 +106,40 @@ func initDB() (*elastic.Client, error) {
 	}
 	return esClient, nil
 }
+func adminAuthMiddleare(config *config.Config) func(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	return func(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+		tokenString := req.Header.Get("authorization")
 
-func adminAuthMiddleare(res http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
-	tokenString := req.Header.Get("authorization")
-
-	if tokenString == "" {
-		panic(generated.HttpError(401).Message("missing token in authorization header"))
-	}
-
-	if !strings.HasPrefix(tokenString, "Bearer ") {
-		panic(generated.HttpError(401).Message("authorization header must be a bearer token"))
-	}
-
-	tokenString = strings.Split(tokenString, " ")[1]
-
-	token, _ := jwt.ParseWithClaims(tokenString, &authentication.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		// Don't forget to validate the alg is what you expect:
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			panic(generated.HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
+		if tokenString == "" {
+			panic(generated.HttpError(401).Message("missing token in authorization header"))
 		}
-		return consts.Secret, nil
-	})
 
-	if !token.Valid {
-		panic(generated.HttpError(401))
+		if !strings.HasPrefix(tokenString, "Bearer ") {
+			panic(generated.HttpError(401).Message("authorization header must be a bearer token"))
+		}
+
+		tokenString = strings.Split(tokenString, " ")[1]
+
+		token, _ := jwt.ParseWithClaims(tokenString, &authentication.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+			// Don't forget to validate the alg is what you expect:
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				panic(generated.HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
+			}
+			return []byte(config.Secret), nil
+		})
+
+		if !token.Valid {
+			panic(generated.HttpError(401))
+		}
+
+		claims, ok := token.Claims.(*authentication.CustomClaims)
+
+		if !ok {
+			panic(generated.HttpError(401).Message("unable to unpack token"))
+		}
+
+		req = req.WithContext(utils.SetClaims(req.Context(), *claims))
+
+		next(res, req)
 	}
-
-	claims, ok := token.Claims.(*authentication.CustomClaims)
-
-	if !ok {
-		panic(generated.HttpError(401).Message("unable to unpack token"))
-	}
-
-	req = req.WithContext(utils.SetClaims(req.Context(), *claims))
-
-	next(res, req)
 }

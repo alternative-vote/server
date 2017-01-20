@@ -34,16 +34,18 @@ func (o *Controller) SendEmail(req *SendEmailRequest) *SendEmailResponse {
         `))
 	}
 
-	//if that worked, let's send out emails to the voters
-	for i, voter := range election.Voters {
-		if strings.ToLower(req.QueryParams.Force) == "true" || !voter.VoteEmailSent {
-			go sendEmail(election, voter.Email)
-			election.Voters[i].VoteEmailSent = true
+	//fire of a go routine to send emails one by one
+	go func() {
+		//if that worked, let's send out emails to the voters
+		for i, voter := range election.Voters {
+			if strings.ToLower(req.QueryParams.Force) == "true" || !voter.VoteEmailSent {
+				o.sendEmail(election, voter.Email)
+				election.Voters[i].VoteEmailSent = true
+			}
 		}
-	}
-
-	//save changes to the db
-	o.saveElection(election)
+		//save changes to the db
+		o.saveElection(election)
+	}()
 
 	return &SendEmailResponse{
 		StatusCode: 200,

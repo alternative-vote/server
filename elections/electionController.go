@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/alternative-vote/server/config"
 	"github.com/alternative-vote/server/consts"
 	"github.com/dgrijalva/jwt-go"
 
@@ -19,6 +20,7 @@ import (
 
 type Controller struct {
 	Client *elastic.Client
+	Config *config.Config
 }
 
 func checkError(err error) {
@@ -34,6 +36,22 @@ func checkError(err error) {
 }
 
 //don't have an "elections service" yet, so just using the controller as a dumping ground service style functions
+func (o *Controller) GetVoterToken(electionId, emailAddress string) string {
+
+	//stuff whatever info we want into the token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, VoterClaims{
+		ElectionId:   electionId,
+		EmailAddress: emailAddress,
+	})
+
+	//sign the token with the hardcoded secret
+	tokenString, err := token.SignedString(o.Config.Secret)
+	if err != nil {
+		panic(err)
+	}
+
+	return tokenString
+}
 
 //get an election from the DB by ID
 func (o *Controller) getElectionById(id string) Election {
@@ -182,13 +200,13 @@ func (o *Controller) getBallots(electionId string) []Ballot {
 }
 
 //decode voter claims information from a jwt token
-func getClaims(tokenString string) VoterClaims {
+func (o *Controller) getClaims(tokenString string) VoterClaims {
 	token, _ := jwt.ParseWithClaims(tokenString, &VoterClaims{}, func(token *jwt.Token) (interface{}, error) {
 		// Don't forget to validate the alg is what you expect:
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			panic(HttpError(401).Message(fmt.Sprintf("Unexpected signing method: %v", token.Header["alg"])))
 		}
-		return consts.Secret, nil
+		return o.Config.Secret, nil
 	})
 
 	if token == nil {
@@ -208,12 +226,12 @@ func getClaims(tokenString string) VoterClaims {
 	return *claims
 }
 
-func sendEmail(election Election, emailAddress string) {
-
-	token := GetVoterToken(election.Id, emailAddress)
+func (o *Controller) sendEmail(election Election, emailAddress string) {
+	fmt.Printf("Sending email to %v...", emailAddress)
+	token := o.GetVoterToken(election.Id, emailAddress)
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", "electioneer.io@gmail.com")
+	m.SetHeader("From", "logrhythm.hackathon@gmail.com")
 	m.SetHeader("To", emailAddress)
 	m.SetHeader("Subject", fmt.Sprintf("Time to cast your vote in %v!", election.Title))
 	m.SetBody("text/html", fmt.Sprintf(`
@@ -235,22 +253,27 @@ This link acts as your voter registration,  so don't share it with anyone else!
 </div>
     `, css, election.Title, election.Subtitle, token))
 
-	d := gomail.NewDialer("smtp.gmail.com", 587, "logrhythm.hackathon@gmail.com", "lawl1234")
+	d := o.getDialer()
 
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
+	fmt.Printf("success.\n")
 
-	fmt.Println("email sent to ", emailAddress)
-	fmt.Println("token = ", token)
+	// fmt.Println("email sent to ", emailAddress)
+	// fmt.Println("token = ", token)
 }
 
-func sendResultsEmail(election Election, emailAddress string) {
+func (o *Controller) getDialer() *gomail.Dialer {
+	return gomail.NewDialer("smtp.sendgrid.net", 587, "apikey", o.Config.SMTP_PASSWORD)
+}
 
-	token := GetVoterToken(election.Id, emailAddress)
+func (o *Controller) sendResultsEmail(election Election, emailAddress string) {
+	fmt.Printf("Sending results email to %v...", emailAddress)
+	token := o.GetVoterToken(election.Id, emailAddress)
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", "electioneer.io@gmail.com")
+	m.SetHeader("From", "logrhythm.hackathon@gmail.com")
 	m.SetHeader("To", emailAddress)
 	m.SetHeader("Subject", fmt.Sprintf("The results are in for %v!", election.Title))
 	m.SetBody("text/html", fmt.Sprintf(`
@@ -269,14 +292,15 @@ func sendResultsEmail(election Election, emailAddress string) {
 </div>
     `, css, election.Title, election.Subtitle, token))
 
-	d := gomail.NewDialer("smtp.gmail.com", 587, "logrhythm.hackathon@gmail.com", "lawl1234")
+	d := o.getDialer()
 
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
 
-	fmt.Println("results email sent to ", emailAddress)
-	fmt.Println("token = ", token)
+	// fmt.Println("results email sent to ", emailAddress)
+	// fmt.Println("token = ", token)
+	fmt.Printf("success.\n")
 }
 
 const css = `

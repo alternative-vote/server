@@ -39,14 +39,17 @@ func (o *Controller) StartElection(req *StartElectionRequest) *StartElectionResp
 	election.DateUpdated.Time = time.Now().UTC()
 	election.DateStarted.Time = time.Now().UTC()
 
-	//if that worked, let's send out emails to the voters
-	for i, voter := range election.Voters {
-		go sendEmail(election, voter.Email)
-		election.Voters[i].VoteEmailSent = true
-	}
-
 	//save changes to the db
 	o.saveElection(election)
+
+	go func() {
+		//if that worked, let's send out emails to the voters
+		for i, voter := range election.Voters {
+			o.sendEmail(election, voter.Email)
+			election.Voters[i].VoteEmailSent = true
+		}
+		o.saveElection(election)
+	}()
 
 	return &StartElectionResponse{
 		StatusCode: 200,

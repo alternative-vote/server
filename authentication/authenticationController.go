@@ -1,7 +1,7 @@
 package authentication
 
 import (
-	"github.com/alternative-vote/server/consts"
+	"github.com/alternative-vote/server/config"
 	. "github.com/alternative-vote/server/generated"
 	"github.com/dgrijalva/jwt-go"
 )
@@ -12,13 +12,14 @@ type CustomClaims struct {
 }
 
 type Controller struct {
+	Config *config.Config
 }
 
 func (o *Controller) Login(req *LoginRequest) *LoginResponse {
 	email, password := req.Body.Email, req.Body.Password
 
 	//hardcoded single user for now
-	if email != "test@fake.com" || password != "test" {
+	if email != "test@fake.com" || password != o.Config.AdminPassword {
 		panic(HttpError(401))
 	}
 
@@ -28,7 +29,7 @@ func (o *Controller) Login(req *LoginRequest) *LoginResponse {
 	})
 
 	//sign the token with the hardcoded secret
-	tokenString, err := token.SignedString(consts.Secret)
+	tokenString, err := token.SignedString([]byte(o.Config.Secret))
 	if err != nil {
 		panic(err)
 	}
